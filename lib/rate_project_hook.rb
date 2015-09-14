@@ -94,7 +94,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
     source = context[:source_project]
     destination = context[:destination_project]
 
-    Rate.find(:all, :conditions => {:project_id => source.id}).each do |source_rate|
+    Rate.where(project_id: source.id).each do |source_rate|
       destination_rate = Rate.new
 
       destination_rate.attributes = source_rate.attributes.except("project_id")

@@ -16,7 +16,7 @@ namespace :rate_plugin do
       
       rates = ''
       # Rate for members
-      Member.find(:all, :conditions => ['rate IS NOT NULL']).each do |member|
+      Member.where('rate IS NOT NULL').each do |member|
         
         rates << {
           :user_id => member.user_id,

@@ -18,13 +18,7 @@ class Rate < ActiveRecord::Base
   before_destroy :unlocked?
   after_destroy :update_time_entry_cost_cache
   
-  named_scope :history_for_user, lambda { |user, order|
-    {
-      :conditions => { :user_id => user.id },
-      :order => order,
-      :include => :project
-    }
-  }
+  scope :history_for_user, lambda { |user, order| where(user_id: user.id).order(order).includes(:project) }
   
   def locked?
     return self.time_entries.length > 0
@@ -73,7 +67,7 @@ class Rate < ActiveRecord::Base
 
   def self.update_all_time_entries_with_missing_cost(options={})
     with_common_lockfile(options[:force]) do
-      TimeEntry.all(:conditions => {:cost => nil}).each do |time_entry|
+      TimeEntry.find_each(cost: nil) do |time_entry|
         begin
           time_entry.save_cached_cost
         rescue Rate::InvalidParameterException => ex
@@ -100,24 +94,14 @@ class Rate < ActiveRecord::Base
   private
   def self.for_user_project_and_date(user, project, date)
     if project.nil?
-      return Rate.find(:first,
-                       :order => 'date_in_effect DESC',
-                       :conditions => [
-                                       "user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL",
-                                       user.id,
-                                       date
-                                      ])
-    
+      return Rate.where("user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL", user.id, date)
+                 .order("date_in_effect DESC")
+                 .first
     else
-      return Rate.find(:first,
-                       :order => 'date_in_effect DESC',
-                       :conditions => [
-                                       "user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?",
-                                       user.id,
-                                       project.id,
-                                       date
-                                      ])
-    end                     
+      return Rate.where("user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?", user.id, project.id, date)
+                 .order('date_in_effect DESC')
+                 .first
+    end
   end
   
   def self.default_for_user_and_date(user, date)
