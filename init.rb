@@ -1,9 +1,7 @@
 require 'redmine'
 
 # Patches to the Redmine core
-require 'dispatcher'
-
-Dispatcher.to_prepare :redmine_rate do
+ActionDispatch::Callbacks.to_prepare do
   gem 'lockfile'
 
   require_dependency 'application_controller'
