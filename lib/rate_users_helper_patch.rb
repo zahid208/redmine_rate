@@ -26,7 +26,8 @@ module RateUsersHelperPatch
           next if project == root
           child_selected = (project == selected) ? 'selected' : nil
 
-          options << content_tag('option', '&#187; ' + h(project.name), :value => project.id, :selected => child_selected)
+          project_name = "&#187; #{h project.name}".html_safe
+          options << content_tag('option', project_name, :value => project.id, :selected => child_selected)
         end
       end
       options
