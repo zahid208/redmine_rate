@@ -54,7 +54,7 @@ class RatesController < ApplicationController
   # POST /rates
   # POST /rates.xml
   def create
-    @rate = Rate.new(params[:rate])
+    @rate = Rate.new(rate_params)
 
     respond_to do |format|
       if @rate.save
@@ -113,6 +113,10 @@ class RatesController < ApplicationController
   end
   
   private
+
+  def rate_params
+    params.require(:rate).permit(:amount, :date_in_effect, :project_id, :user_id)
+  end
   
   def require_user_id
     begin
