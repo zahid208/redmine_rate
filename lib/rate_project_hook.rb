@@ -36,11 +36,11 @@ class RateProjectHook < Redmine::Hook::ViewListener
       rate = Rate.for(member.user, project)
     end
 
-    content = ''
+    content = ''.html_safe
     
     if rate.nil? || rate.default?
       if rate && rate.default?
-        content << "<em>#{number_to_currency(rate.amount)}</em> "
+        content << "<em>#{number_to_currency(rate.amount)}</em> ".html_safe
       end
 
       if (User.current.admin?)
@@ -68,7 +68,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
       form << hidden_field_tag("back_url", url_for(:controller => 'projects', :action => 'settings', :id => project, :tab => 'members', :protocol => Setting.protocol, :host => Setting.host_name))
 
       form << submit_tag(l(:rate_label_set_rate), :class => "small")
-      form << "</form>"
+      form << "</form>".html_safe
         
       content << form
       end
@@ -87,7 +87,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
         content << content_tag(:strong, number_to_currency(rate.amount))
       end
     end
-    return content_tag(:td, content, :align => 'left', :id => "rate_#{project.id}_#{member.user.id}" )
+    return content_tag(:td, content, :align => 'left', :id => "rate_#{project.id}_#{member.user.id}" ).html_safe
   end
 
   def model_project_copy_before_save(context = {})
