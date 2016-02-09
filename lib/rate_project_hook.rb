@@ -54,15 +54,10 @@ class RateProjectHook < Redmine::Hook::ViewListener
       }
       # Build a form_remote_tag by hand since this isn't in the scope of a controller
       # and url_rewriter doesn't like that fact.
-      form = form_tag(url, :onsubmit => remote_function(:url => url,
-                                                        :host => Setting.host_name,
-                                                        :protocol => Setting.protocol,
-                                                        :form => true,
-                                                        :method => 'post',
-                                                        :return => 'false' )+ '; return false;')
+      form = form_tag url, remote: true
       
       form << text_field(:rate, :amount)
-      form << hidden_field(:rate,:date_in_effect, :value => Date.today.to_s)
+      form << hidden_field(:rate, :date_in_effect, :value => Date.today.to_s)
       form << hidden_field(:rate, :project_id, :value => project.id)
       form << hidden_field(:rate, :user_id, :value => member.user.id) 
       form << hidden_field_tag("back_url", url_for(:controller => 'projects', :action => 'settings', :id => project, :tab => 'members', :protocol => Setting.protocol, :host => Setting.host_name))
