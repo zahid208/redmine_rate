@@ -9,7 +9,7 @@ module RedmineRate
 
         cost = cost_item(time_entry)
         return "" unless cost # Permissions
-        
+
         if cost && cost <= 0
           return "missing-rate"
         else

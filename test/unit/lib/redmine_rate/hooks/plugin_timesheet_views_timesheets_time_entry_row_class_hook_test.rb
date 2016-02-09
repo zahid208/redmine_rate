@@ -12,7 +12,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetsTimeEntryRowClassTest < 
   def request
     @request ||= ActionController::TestRequest.new
   end
-  
+
   def hook(args={})
     call_hook :plugin_timesheet_views_timesheets_time_entry_row_class, args
   end
@@ -54,7 +54,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetsTimeEntryRowClassTest < 
 
         assert_equal "", hook(:time_entry => time_entry)
       end
-    end    
+    end
 
   end
 end

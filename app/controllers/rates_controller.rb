@@ -67,7 +67,7 @@ class RatesController < ApplicationController
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @rate.errors, :status => :unprocessable_entity }
-        format.js { 
+        format.js {
           flash.now[:error] = 'Error creating a new Rate.'
           render action: :create_error
         }
@@ -111,13 +111,13 @@ class RatesController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
   private
 
   def rate_params
     params.require(:rate).permit(:amount, :date_in_effect, :project_id, :user_id)
   end
-  
+
   def require_user_id
     begin
       @user = User.find(params[:user_id])
@@ -129,17 +129,17 @@ class RatesController < ApplicationController
       end
     end
   end
-  
+
   def set_back_url
     @back_url = params[:back_url]
     @back_url
   end
-  
+
   # Override defination from ApplicationController to make sure it follows a
   # whitelist
   def redirect_back_or_default(default)
     whitelist = %r{(rates|/users/edit)}
-    
+
     back_url = CGI.unescape(params[:back_url].to_s)
     if !back_url.blank?
       begin

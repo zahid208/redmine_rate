@@ -12,7 +12,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntryTest < ActionCon
   def request
     @request ||= ActionController::TestRequest.new
   end
-  
+
   def hook(args={})
     call_hook :plugin_timesheet_views_timesheet_time_entry, args
   end
@@ -23,11 +23,11 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntryTest < ActionCon
         User.current = User.generate!(:admin => true)
         rate = Rate.generate!(:amount => 100)
         time_entry = TimeEntry.generate!(:hours => 2, :rate => rate)
-        
+
         @response.body = hook(:time_entry => time_entry)
 
         assert_select 'td', :text => "$200.00"
-        
+
       end
     end
 
@@ -36,12 +36,12 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntryTest < ActionCon
         User.current = nil
         rate = Rate.generate!(:amount => 100)
         time_entry = TimeEntry.generate!(:hours => 2, :rate => rate)
-        
+
         @response.body = hook(:time_entry => time_entry)
 
         assert_select 'td', :text => '&nbsp;'
-        
+
       end
-    end    
+    end
   end
 end

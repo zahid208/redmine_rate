@@ -10,6 +10,6 @@ class RateMembershipsHook < Redmine::Hook::ViewListener
                                          :membership => context[:membership],
                                          :user => context[:user]
                                        }})
-                                                   
+
   end
 end

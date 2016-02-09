@@ -27,7 +27,7 @@ module RateHelper
     # Trunk version of sort_link.  Was modified in r2571 of Redmine
     def rate_sort_link_trunk_version(column, caption, default_order, options = { })
       css, order = nil, default_order
-    
+
       if column.to_s == @sort_criteria.first_key
         if @sort_criteria.first_asc?
           css = 'sort asc'
@@ -42,7 +42,7 @@ module RateHelper
       sort_options = { :sort => @sort_criteria.add(column.to_s, order).to_param }
       # don't reuse params if filters are present
       url_options = params.has_key?(:set_filter) ? sort_options : params.merge(sort_options)
-    
+
       # Add project_id to url_options
       url_options = url_options.merge(:project_id => params[:project_id]) if params.has_key?(:project_id)
 
@@ -81,11 +81,11 @@ module RateHelper
         order = default_order
       end
       caption = titleize(ActiveSupport::Inflector::humanize(column)) unless caption
-      
+
       sort_options = { :sort_key => column, :sort_order => order }
       # don't reuse params if filters are present
       url_options = params.has_key?(:set_filter) ? sort_options : params.merge(sort_options)
-      
+
       ##### Hard code url to the Rates index
       url_options[:controller] = 'rates'
       url_options[:action] = 'index'
@@ -97,5 +97,5 @@ module RateHelper
                      {:href => url_for(url_options)}) +
         (icon ? nbsp(2) + image_tag(icon) : '')
     end
-    
+
 end

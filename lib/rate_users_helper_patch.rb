@@ -5,7 +5,7 @@ module RateUsersHelperPatch
       alias_method_chain :user_settings_tabs, :rate_tab
     end
   end
-  
+
   module InstanceMethods
     # Adds a rates tab to the user administration page
     def user_settings_tabs_with_rate_tab
@@ -13,7 +13,7 @@ module RateUsersHelperPatch
       tabs << { :name => 'rates', :partial => 'users/rates', :label => :rate_label_rate_history}
       return tabs
     end
-    
+
     # Similar to +project_options_for_select+ but allows selecting the active value
     def project_options_for_select_with_selected(projects, selected = nil)
       options = content_tag('option', "--- #{l(:rate_label_default)} ---", :value => '')
@@ -32,7 +32,7 @@ module RateUsersHelperPatch
       end
       options
     end
-    
+
   end
 end
 

@@ -9,7 +9,7 @@ class RateUsersHelperPatchTest < ActiveSupport::TestCase
     helper = UsersHelperWrapper.new
     assert_equal 3, helper.user_settings_tabs.length
   end
-  
+
   should 'should include a rate tab at the end' do
     helper = UsersHelperWrapper.new
     rate_tab = helper.user_settings_tabs[-1]

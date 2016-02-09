@@ -1,10 +1,10 @@
 # Hooks to attach to the Redmine Projects.
 class RateProjectHook < Redmine::Hook::ViewListener
-  
+
   def protect_against_forgery?
     false
   end
-  
+
   # Renders an additional table header to the membership setting
   #
   # Context:
@@ -14,7 +14,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
     return '' unless (User.current.allowed_to?(:view_rate, context[:project]) || User.current.admin?)
     return "<th>#{l(:rate_label_rate)} #{l(:rate_label_currency)}</td>"
   end
-  
+
   # Renders an AJAX from to update the member's billing rate
   #
   # Context:
@@ -37,7 +37,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
     end
 
     content = ''.html_safe
-    
+
     if rate.nil? || rate.default?
       if rate && rate.default?
         content << "<em>#{number_to_currency(rate.amount)}</em> ".html_safe
@@ -55,22 +55,22 @@ class RateProjectHook < Redmine::Hook::ViewListener
       # Build a form_remote_tag by hand since this isn't in the scope of a controller
       # and url_rewriter doesn't like that fact.
       form = form_tag url, remote: true
-      
+
       form << text_field(:rate, :amount)
       form << hidden_field(:rate, :date_in_effect, :value => Date.today.to_s)
       form << hidden_field(:rate, :project_id, :value => project.id)
-      form << hidden_field(:rate, :user_id, :value => member.user.id) 
+      form << hidden_field(:rate, :user_id, :value => member.user.id)
       form << hidden_field_tag("back_url", url_for(:controller => 'projects', :action => 'settings', :id => project, :tab => 'members', :protocol => Setting.protocol, :host => Setting.host_name))
 
       form << submit_tag(l(:rate_label_set_rate), :class => "small")
       form << "</form>".html_safe
-        
+
       content << form
       end
     else
       if (User.current.admin?)
 
-      content << content_tag(:strong, link_to(number_to_currency(rate.amount), { 
+      content << content_tag(:strong, link_to(number_to_currency(rate.amount), {
                                                 :controller => 'users',
                                                 :action => 'edit',
                                                 :id => member.user,

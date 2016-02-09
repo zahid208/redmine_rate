@@ -12,7 +12,7 @@ class RedmineRate::Hooks::PluginTimesheetViewTimesheetsReportHeaderTagsTest < Ac
   def request
     @request ||= ActionController::TestRequest.new
   end
-  
+
   def hook(args={})
     call_hook :plugin_timesheet_view_timesheets_report_header_tags, args
   end

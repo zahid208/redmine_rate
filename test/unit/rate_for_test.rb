@@ -6,13 +6,13 @@ class RateForTest < ActiveSupport::TestCase
     setup do
       @user = User.generate!
     end
-    
+
     context 'a user with no Rates' do
       should 'should return nil' do
         assert_nil Rate.for(@user)
       end
     end
-    
+
     context 'a user with one default Rate' do
       should 'should return the Rate if the Rate is effective today' do
         rate = Rate.create!({ :user_id => @user.id, :amount => 100.0, :date_in_effect => Date.today})
@@ -22,14 +22,14 @@ class RateForTest < ActiveSupport::TestCase
       should 'should return nil if the Rate is not effective yet' do
         assert_nil Rate.for(@user)
       end
-      
+
       should 'should return the same default Rate on all projects' do
         project = Project.generate!
         rate = Rate.create!({ :user_id => @user.id, :amount => 100.0, :date_in_effect => Date.today})
         assert_equal rate, Rate.for(@user, project)
       end
     end
-    
+
     context 'a user with two default Rates' do
       should 'should return the newest Rate before the todays date' do
         rate = Rate.create!({ :user_id => @user.id, :amount => 100.0, :date_in_effect => Date.yesterday})
@@ -37,7 +37,7 @@ class RateForTest < ActiveSupport::TestCase
         assert_equal rate2, Rate.for(@user)
       end
     end
-    
+
     context 'a user with a default Rate and Rate on a project' do
       should 'should return the project Rate if its effective today' do
         project = Project.generate!
@@ -60,7 +60,7 @@ class RateForTest < ActiveSupport::TestCase
         assert_nil Rate.for(@user, project)
       end
     end
-    
+
     context 'a user with two Rates on a project' do
       should 'should return the newest Rate before the todays date' do
         project = Project.generate!

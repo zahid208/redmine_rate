@@ -8,7 +8,7 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
     @time_entry = TimeEntry.new({:user => @user, :project => @project, :spent_on => @date, :hours => 10.0, :activity => TimeEntryActivity.generate!})
     @rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
   end
-  
+
   should 'should return 0.0 if there are no rates for the user' do
     @rate.destroy
     assert_equal 0.0, @time_entry.cost
@@ -31,13 +31,13 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
     setup do
       @time_entry.save!
     end
-    
+
     context "without a cache" do
       should "return the calculated cost" do
         @time_entry.update_attribute(:cost, nil)
         assert_equal 2000.0, @time_entry.cost
       end
-      
+
       should "cache the cost to the field" do
         @time_entry.update_attribute(:cost, nil)
         @time_entry.cost
@@ -45,7 +45,7 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
         assert_equal 2000.0, @time_entry.read_attribute(:cost)
         assert_equal 2000.0, @time_entry.reload.read_attribute(:cost)
       end
-      
+
     end
 
     context "with a cache" do
@@ -53,12 +53,12 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
         @time_entry.update_attribute(:cost, 2000.0)
         @time_entry.reload
       end
-      
+
       should "return the cached cost" do
         assert_equal 2000.0, @time_entry.read_attribute(:cost)
         assert_equal 2000.0, @time_entry.cost
       end
-      
+
     end
 
   end
@@ -84,9 +84,9 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
       assert_equal 4000.0, @time_entry.read_attribute(:cost)
       assert_equal 4000.0, @time_entry.reload.cost
     end
-    
+
 
   end
-  
+
 
 end

@@ -25,7 +25,7 @@ module IntegrationTestHelper
     assert_response :success
     assert !User.current.logged?
   end
-  
+
   def assert_forbidden
     assert_response :forbidden
     assert_template 'common/error'
@@ -35,7 +35,7 @@ module IntegrationTestHelper
     assert_response :success
     assert_template 'account/login'
   end
-  
+
 end
 
 class ActionController::IntegrationTest
