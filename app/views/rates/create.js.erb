@@ -1,0 +1,4 @@
+var elementId = '<%= "#rate_#{@rate.project_id.to_s}_#{@rate.user_id.to_s}" %>';
+$(elementId).html('<strong><%= link_to number_to_currency(@rate.amount), {
+    controller: :users, action: :edit, id: @rate.user, tab: :rates
+} %></strong>');

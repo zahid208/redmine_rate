@@ -1,0 +1,4 @@
+$('div.flash').each(function (value) {
+    $(value).hide();
+});
+$('#content').prepend('<%= render_flash_messages %>');

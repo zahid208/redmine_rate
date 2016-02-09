@@ -63,13 +63,13 @@ class RatesController < ApplicationController
           redirect_back_or_default(rates_url(:user_id => @rate.user_id))
         }
         format.xml  { render :xml => @rate, :status => :created, :location => @rate }
-        format.js { render :action => 'create.js.rjs'}
+        format.js { render action: :create }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @rate.errors, :status => :unprocessable_entity }
         format.js { 
           flash.now[:error] = 'Error creating a new Rate.'
-          render :action => 'create_error.js.rjs'
+          render action: :create_error
         }
       end
     end
