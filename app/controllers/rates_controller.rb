@@ -104,10 +104,14 @@ class RatesController < ApplicationController
     @rate.destroy
 
     respond_to do |format|
-      format.html {
-        flash[:error] = "Rate is locked and cannot be deleted" if @rate.locked?
-        redirect_back_or_default(rates_url(:user_id => @rate.user_id))
-      }
+      format.html do
+        if @rate.locked?
+          flash[:error] = "Rate is locked and cannot be deleted"
+        else
+          flash[:notice] = "Rate was deleted."
+          redirect_back_or_default rates_url(user_id: @rate.user_id)
+        end
+      end
       format.xml  { head :ok }
     end
   end
