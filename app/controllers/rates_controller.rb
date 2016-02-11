@@ -82,7 +82,7 @@ class RatesController < ApplicationController
 
     respond_to do |format|
       # Locked rates will fail saving here.
-      if @rate.update_attributes(params[:rate])
+      if @rate.update_attributes rate_params
         flash[:notice] = 'Rate was successfully updated.'
         format.html { redirect_back_or_default(rates_url(:user_id => @rate.user_id)) }
         format.xml  { head :ok }
@@ -115,7 +115,7 @@ class RatesController < ApplicationController
   private
 
   def rate_params
-    params.require(:rate).permit(:amount, :date_in_effect, :project_id, :user_id)
+    params.require(:rate).permit :amount, :date_in_effect, :project_id, :user_id
   end
 
   def require_user_id
