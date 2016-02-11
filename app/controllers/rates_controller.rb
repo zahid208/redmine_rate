@@ -7,20 +7,25 @@ class RatesController < ApplicationController
   before_filter :require_admin
   before_filter :require_user_id, :only => [:index, :new]
   before_filter :set_back_url
-  
-  ValidSortOptions = {'date_in_effect' => "#{Rate.table_name}.date_in_effect", 'project_id' => "#{Project.table_name}.name"}
-  
+
+  VALID_SORT_OPTIONS = {
+    "date_in_effect" => "#{Rate.table_name}.date_in_effect",
+    "project_id" => "#{Project.table_name}.name"
+  }.freeze
+
   # GET /rates?user_id=1
   # GET /rates.xml?user_id=1
+  # GET /rates.json?user_id=1
   def index
     sort_init "#{Rate.table_name}.date_in_effect", "desc"
-    sort_update ValidSortOptions
+    sort_update VALID_SORT_OPTIONS
 
     @rates = Rate.history_for_user(@user, sort_clause)
 
     respond_to do |format|
       format.html { render :action => 'index', :layout => !request.xhr?}
       format.xml  { render :xml => @rates }
+      format.js
     end
   end
 
