@@ -1,4 +1,3 @@
-ActionController::Routing::Routes.draw do |map|
-  map.resources :rates
-  map.connect 'rate_caches', :conditions => {:method => :put}, :controller => 'rate_caches', :action => 'update'
-end
+resources :rates
+get "rate_caches", to: "rate_caches#index"
+put "rate_caches", to: "rate_caches#update"
