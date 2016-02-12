@@ -134,14 +134,6 @@ class Rate < ActiveRecord::Base
     end
   end
 
-  if Rails.env.test?
-    require 'object_daddy'
-    include ObjectDaddy
-
-    public
-    generator_for :date_in_effect => Date.today
-  end
-
   def self.lock_file
     Rails.root + 'tmp' + Rate::CACHING_LOCK_FILE_NAME
   end
