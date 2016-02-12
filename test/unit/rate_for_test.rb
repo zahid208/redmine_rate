@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper.rb"
 
 # Test cases for the main Rate#for API
 class RateForTest < ActiveSupport::TestCase

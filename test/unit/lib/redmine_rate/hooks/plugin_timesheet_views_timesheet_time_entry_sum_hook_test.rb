@@ -1,7 +1,11 @@
-require File.dirname(__FILE__) + '/../../../../test_helper'
+require_relative "../../../../test_helper"
 
 class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < ActionController::TestCase
   include Redmine::Hook::Helper
+
+  def setup
+    TimeEntryActivity.generate!
+  end
 
   def controller
     @controller ||= ApplicationController.new
@@ -20,7 +24,9 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < Action
   context "#plugin_timesheet_views_timesheet_time_entry_sum" do
     context "for users with view rate permission" do
       should "render a cost cell showing the total cost for the time entries" do
-        User.current = User.generate!(:admin => true)
+        User.current = User.generate!
+        User.current.admin = true
+
         rate = Rate.generate!(:amount => 100)
         time_entry1 = TimeEntry.generate!(:hours => 2, :rate => rate)
         time_entry2 = TimeEntry.generate!(:hours => 10, :rate => rate)

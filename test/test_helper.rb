@@ -1,10 +1,14 @@
 # Load the normal Rails helper
-require File.expand_path(File.dirname(__FILE__) + '/../../../../test/test_helper')
-
-# Ensure that we are using the temporary fixture path
-Engines::Testing.set_fixture_path
-
+require_relative "../../../test/test_helper"
+require_relative "../../../test/object_helpers"
+require_relative "object_helpers"
 require "webrat"
+
+ActiveSupport::TestCase.fixture_path = File.dirname(__FILE__) + '/../../../test/fixtures'
+
+class ActiveSupport::TestCase
+  fixtures :users, :issues, :projects, :time_entries
+end
 
 Webrat.configure do |config|
   config.mode = :rails

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require_relative "../test_helper"
 
 class RateTest < ActiveSupport::TestCase
   def rate_valid_attributes
@@ -10,13 +10,17 @@ class RateTest < ActiveSupport::TestCase
     }
   end
 
-  should_belong_to :project
-  should_belong_to :user
-  should_have_many :time_entries
+  def setup
+    TimeEntryActivity.generate!
+  end
 
-  should_validate_presence_of :user_id
-  should_validate_presence_of :date_in_effect
-  should_validate_numericality_of :amount
+  should belong_to :project
+  should belong_to :user
+  should have_many :time_entries
+
+  should validate_presence_of :user_id
+  should validate_presence_of :date_in_effect
+  should validate_numericality_of :amount
 
 
   context '#locked?' do
@@ -281,15 +285,9 @@ class RateTest < ActiveSupport::TestCase
     end
 
     should "update the caches of all Time Entries" do
-      TimeEntry.update_all('cost = null')
-
-      # Check that cost is NULL in the database, which skips the caching
-      assert_equal 2, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
-
+      TimeEntry.update_all cost: nil
       Rate.update_all_time_entries_with_missing_cost
-
-      assert_equal 0, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
-
+      assert_empty TimeEntry.where cost: nil
     end
 
     should "timestamp a successful run" do
@@ -307,18 +305,19 @@ class RateTest < ActiveSupport::TestCase
       @user = User.generate!
       @project = Project.generate!
       @date = Date.today.to_s
-      @rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
+
+      # Get rid of the fixtures we load in our test_helper since they have no cost
+      TimeEntry.delete_all
+
       @time_entry1 = TimeEntry.generate!({:user => @user, :project => @project, :spent_on => @date, :hours => 10.0, :activity => TimeEntryActivity.generate!})
       @time_entry2 = TimeEntry.generate!({:user => @user, :project => @project, :spent_on => @date, :hours => 20.0, :activity => TimeEntryActivity.generate!})
+      @rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 200.0)
     end
 
     should "update the caches of all Time Entries" do
-      assert_equal 0, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
-
+      assert_empty TimeEntry.where cost: nil
       Rate.update_all_time_entries_to_refresh_cache
-
-      assert_equal 0, ActiveRecord::Base.connection.select_all('select count(*) as count from time_entries where cost IS NULL').first["count"].to_i
-
+      assert_empty TimeEntry.where cost: nil
     end
 
     should "timestamp a successful run" do

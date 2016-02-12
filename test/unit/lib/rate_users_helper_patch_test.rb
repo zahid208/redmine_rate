@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require_relative "../../test_helper"
 
 class UsersHelperWrapper
   include UsersHelper
@@ -7,7 +7,7 @@ end
 class RateUsersHelperPatchTest < ActiveSupport::TestCase
   should 'should return 3 tabs' do
     helper = UsersHelperWrapper.new
-    assert_equal 3, helper.user_settings_tabs.length
+    assert_equal 4, helper.user_settings_tabs.length
   end
 
   should 'should include a rate tab at the end' do
