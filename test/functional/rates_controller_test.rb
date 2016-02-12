@@ -1,6 +1,9 @@
 require_relative "../test_helper"
 
 class RatesControllerTest < ActionController::TestCase
+  setup do
+    TimeEntryActivity.generate!
+  end
 
   def self.should_be_unauthorized(&block)
     should 'should return a forbidden status code' do
@@ -32,7 +35,7 @@ class RatesControllerTest < ActionController::TestCase
       :amount => 100.0,
       :user => @user
     }.merge(stubs)
-    @mock_rate = Rate.generate(stubs)
+    @mock_rate = Rate.generate!(stubs)
   end
 
   def mock_locked_rate(stubs={})
@@ -80,7 +83,7 @@ class RatesControllerTest < ActionController::TestCase
   context "as an administrator" do
 
     setup do
-      @user = User.generate!(:admin => true)
+      @user = User.generate! { |u| u.admin = true }
       @request.session[:user_id] = @user.id
     end
 
@@ -126,7 +129,7 @@ class RatesControllerTest < ActionController::TestCase
 
           assert_select 'rates' do
             assert_select 'rate' do
-              assert_select 'id', :text => @mock_rate.id
+              assert_select 'id', :text => @mock_rate.id.to_s
             end
           end
 
@@ -153,7 +156,7 @@ class RatesControllerTest < ActionController::TestCase
           get :show, :id => @mock_rate.id
 
           assert_select 'rate' do
-            assert_select 'id', :text => @mock_rate.id
+            assert_select 'id', :text => @mock_rate.id.to_s
             assert_select 'amount', :text => /100/
           end
 
@@ -222,7 +225,7 @@ class RatesControllerTest < ActionController::TestCase
 
         should 'should show the locked icon' do
           get :edit, :id => @mock_rate.id
-          assert_select "img[src*=locked.png]"
+          assert_select "img[src*='locked.png']"
         end
       end
 
@@ -257,12 +260,12 @@ class RatesControllerTest < ActionController::TestCase
 
       context "with invalid params" do
         should "should expose a newly created but unsaved rate as @rate" do
-          post :create, :rate => {}
+          post :create, :rate => { :amount => 0 }
           assert assigns(:rate).new_record?
         end
 
         should "should re-render the 'new' template" do
-          post :create, :rate => {}
+          post :create, :rate => { :amount => 0 }
           assert_template 'new'
         end
 
@@ -278,26 +281,26 @@ class RatesControllerTest < ActionController::TestCase
         end
 
         should "should update the requested rate" do
-          put :update, :id => @mock_rate.id, :rate => {:amount => '150'}
+          put :update, :id => @mock_rate.id, :rate => { :amount => '150' }
 
           assert_equal 150.0, @mock_rate.reload.amount
         end
 
         should "should expose the requested rate as @rate" do
-          put :update, :id => @mock_rate.id
+          put :update, :id => @mock_rate.id, :rate => { :amount => 0 }
 
           assert_equal assigns(:rate), @mock_rate
         end
 
         should "should redirect to the rate list" do
-          put :update, :id => "1"
+          put :update, :id => @mock_rate.id, :rate => { :amount => 0 }
 
           assert_redirected_to rates_url(:user_id => @user.id)
         end
 
         should 'should redirect to the back_url if set' do
           back_url = '/rates'
-          put :update, :id => "1", :back_url => back_url
+          put :update, :id => @mock_rate.id, :back_url => back_url, :rate => { :amount => 0 }
 
           assert_redirected_to back_url
         end
@@ -310,19 +313,19 @@ class RatesControllerTest < ActionController::TestCase
         end
 
         should "should not update the requested rate" do
-          put :update, :id => @mock_rate.id, :rate => {:amount => 'asdf'}
+          put :update, :id => @mock_rate.id, :rate => { :amount => 'asdf' }
 
           assert_equal 100.0, @mock_rate.reload.amount
         end
 
         should "should expose the rate as @rate" do
-          put :update, :id => @mock_rate.id, :rate => {:amount => 'asdf'}
+          put :update, :id => @mock_rate.id, :rate => { :amount => 'asdf' }
 
           assert_equal assigns(:rate), @mock_rate
         end
 
         should "should re-render the 'edit' template" do
-          put :update, :id => @mock_rate.id, :rate => {:amount => 'asdf'}
+          put :update, :id => @mock_rate.id, :rate => { :amount => 'asdf' }
 
           assert_template 'edit'
         end
@@ -335,25 +338,25 @@ class RatesControllerTest < ActionController::TestCase
         end
 
         should "should not save the rate" do
-          put :update, :id => @mock_rate.id, :rate => {:amount => '150'}
+          put :update, :id => @mock_rate.id, :rate => { :amount => 150 }
 
           assert_equal 100, @mock_rate.reload.amount
         end
 
         should "should set the locked rate as @rate" do
-          put :update, :id => @mock_rate.id, :rate => { :amount => 200.0 }
+          put :update, :id => @mock_rate.id, :rate => { :amount => 200 }
 
           assert_equal assigns(:rate), @mock_rate
         end
 
         should "should re-render the 'edit' template" do
-          put :update, :id => @mock_rate.id
+          put :update, :id => @mock_rate.id, :rate => { :amount => 0 }
 
           assert_template 'edit'
         end
 
         should "should render an error message" do
-          put :update, :id => @mock_rate.id
+          put :update, :id => @mock_rate.id, :rate => { :amount => 0 }
 
           assert_match /locked/, flash[:error]
         end
@@ -379,7 +382,7 @@ class RatesControllerTest < ActionController::TestCase
 
       should 'should redirect to the back_url if set' do
         back_url = '/rates'
-        delete :destroy, :id => "1", :back_url => back_url
+        delete :destroy, :id => @mock_rate.id, :back_url => back_url, :rate => { :amount => 0 }
 
         assert_redirected_to back_url
       end
