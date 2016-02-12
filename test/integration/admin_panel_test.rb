@@ -12,7 +12,7 @@ class AdminPanelTest < ActionController::IntegrationTest
       'last_cache_clearing_run' => @last_cache_clearing_run
     }
 
-    @user = User.generate!(:password => 'rates', :password_confirmation => 'rates') { |u| u.admin = true }
+    @user = User.generate!(password: 'rates', password_confirmation: 'rates') { |u| u.admin = true }
 
     login_as(@user.login, 'rates')
   end
@@ -33,7 +33,7 @@ class AdminPanelTest < ActionController::IntegrationTest
       click_link "Rate Caches"
 
       assert_select '#caching-run' do
-        assert_select 'p', :text => /#{format_time(@last_caching_run)}/
+        assert_select 'p', text: /#{format_time(@last_caching_run)}/
       end
 
     end
@@ -43,7 +43,7 @@ class AdminPanelTest < ActionController::IntegrationTest
       click_link "Rate Caches"
 
       assert_select '#cache-clearing-run' do
-        assert_select 'p', :text => /#{format_time(@last_cache_clearing_run)}/
+        assert_select 'p', text: /#{format_time(@last_cache_clearing_run)}/
       end
 
     end
@@ -58,7 +58,7 @@ class AdminPanelTest < ActionController::IntegrationTest
       appx_clear_time = Date.today.strftime("%m/%d/%Y")
 
       assert_select '#caching-run' do
-        assert_select 'p', :text => /#{appx_clear_time}/
+        assert_select 'p', text: /#{appx_clear_time}/
       end
 
     end
@@ -73,7 +73,7 @@ class AdminPanelTest < ActionController::IntegrationTest
       appx_clear_time = Date.today.strftime("%m/%d/%Y")
 
       assert_select '#cache-clearing-run' do
-        assert_select 'p', :text => /#{appx_clear_time}/
+        assert_select 'p', text: /#{appx_clear_time}/
       end
 
     end

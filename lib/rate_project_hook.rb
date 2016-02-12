@@ -8,7 +8,7 @@ class RateProjectHook < Redmine::Hook::ViewListener
   # Renders an additional table header to the membership setting
   #
   # Context:
-  # * :project => Current project
+  # * project: Current project
   #
   def view_projects_settings_members_table_header(context ={ })
     return '' unless (User.current.allowed_to?(:view_rate, context[:project]) || User.current.admin?)
@@ -18,8 +18,8 @@ class RateProjectHook < Redmine::Hook::ViewListener
   # Renders an AJAX from to update the member's billing rate
   #
   # Context:
-  # * :project => Current project
-  # * :member => Current Member record
+  # * project: Current project
+  # * member: Current Member record
   #
   # TODO: Move to a view
   def view_projects_settings_members_table_row(context = { })
@@ -46,23 +46,23 @@ class RateProjectHook < Redmine::Hook::ViewListener
       if (User.current.admin?)
 
       url = {
-        :controller => 'rates',
-        :action => 'create',
-        :method => :post,
-        :protocol => Setting.protocol,
-        :host => Setting.host_name
+        controller: 'rates',
+        action: 'create',
+        method: :post,
+        protocol: Setting.protocol,
+        host: Setting.host_name
       }
       # Build a form_remote_tag by hand since this isn't in the scope of a controller
       # and url_rewriter doesn't like that fact.
       form = form_tag url, remote: true
 
       form << text_field(:rate, :amount)
-      form << hidden_field(:rate, :date_in_effect, :value => Date.today.to_s)
-      form << hidden_field(:rate, :project_id, :value => project.id)
-      form << hidden_field(:rate, :user_id, :value => member.user.id)
-      form << hidden_field_tag("back_url", url_for(:controller => 'projects', :action => 'settings', :id => project, :tab => 'members', :protocol => Setting.protocol, :host => Setting.host_name))
+      form << hidden_field(:rate, :date_in_effect, value: Date.today.to_s)
+      form << hidden_field(:rate, :project_id, value: project.id)
+      form << hidden_field(:rate, :user_id, value: member.user.id)
+      form << hidden_field_tag("back_url", url_for(controller: 'projects', action: 'settings', id: project, tab: 'members', protocol: Setting.protocol, host: Setting.host_name))
 
-      form << submit_tag(l(:rate_label_set_rate), :class => "small")
+      form << submit_tag(l(:rate_label_set_rate), class: "small")
       form << "</form>".html_safe
 
       content << form
@@ -71,18 +71,18 @@ class RateProjectHook < Redmine::Hook::ViewListener
       if (User.current.admin?)
 
       content << content_tag(:strong, link_to(number_to_currency(rate.amount), {
-                                                :controller => 'users',
-                                                :action => 'edit',
-                                                :id => member.user,
-                                                :tab => 'rates',
-                                                :protocol => Setting.protocol,
-                                                :host => Setting.host_name
+                                                controller: 'users',
+                                                action: 'edit',
+                                                id: member.user,
+                                                tab: 'rates',
+                                                protocol: Setting.protocol,
+                                                host: Setting.host_name
                                               }))
       else
         content << content_tag(:strong, number_to_currency(rate.amount))
       end
     end
-    return content_tag(:td, content, :align => 'left', :id => "rate_#{project.id}_#{member.user.id}" ).html_safe
+    return content_tag(:td, content, align: 'left', id: "rate_#{project.id}_#{member.user.id}" ).html_safe
   end
 
   def model_project_copy_before_save(context = {})

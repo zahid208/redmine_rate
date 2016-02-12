@@ -5,7 +5,7 @@ class RatesController < ApplicationController
   include SortHelper
 
   before_filter :require_admin
-  before_filter :require_user_id, :only => [:index, :new]
+  before_filter :require_user_id, only: [:index, :new]
   before_filter :set_back_url
 
   VALID_SORT_OPTIONS = {
@@ -23,8 +23,8 @@ class RatesController < ApplicationController
     @rates = Rate.history_for_user(@user, sort_clause)
 
     respond_to do |format|
-      format.html { render :action => 'index', :layout => !request.xhr?}
-      format.xml  { render :xml => @rates }
+      format.html { render action: 'index', layout: !request.xhr?}
+      format.xml  { render xml: @rates }
       format.js
     end
   end
@@ -36,18 +36,18 @@ class RatesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @rate }
+      format.xml  { render xml: @rate }
     end
   end
 
   # GET /rates/new?user_id=1
   # GET /rates/new.xml?user_id=1
   def new
-    @rate = Rate.new(:user_id => @user.id)
+    @rate = Rate.new(user_id: @user.id)
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @rate }
+      format.xml  { render xml: @rate }
     end
   end
 
@@ -65,13 +65,13 @@ class RatesController < ApplicationController
       if @rate.save
         format.html {
           flash[:notice] = 'Rate was successfully created.'
-          redirect_back_or_default(rates_url(:user_id => @rate.user_id))
+          redirect_back_or_default(rates_url(user_id: @rate.user_id))
         }
-        format.xml  { render :xml => @rate, :status => :created, :location => @rate }
+        format.xml  { render xml: @rate, status: :created, location: @rate }
         format.js { render action: :create }
       else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @rate.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.xml  { render xml: @rate.errors, status: :unprocessable_entity }
         format.js {
           flash.now[:error] = 'Error creating a new Rate.'
           render action: :create_error
@@ -89,15 +89,15 @@ class RatesController < ApplicationController
       # Locked rates will fail saving here.
       if @rate.update_attributes rate_params
         flash[:notice] = 'Rate was successfully updated.'
-        format.html { redirect_back_or_default(rates_url(:user_id => @rate.user_id)) }
+        format.html { redirect_back_or_default(rates_url(user_id: @rate.user_id)) }
         format.xml  { head :ok }
       else
         if @rate.locked?
           flash[:error] = "Rate is locked and cannot be edited"
           @rate.reload # Removes attribute changes
         end
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @rate.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.xml  { render xml: @rate.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -134,7 +134,7 @@ class RatesController < ApplicationController
       respond_to do |format|
         flash[:error] = l(:rate_error_user_not_found)
         format.html { redirect_to(home_url) }
-        format.xml  { render :xml => "User not found", :status => :not_found }
+        format.xml  { render xml: "User not found", status: :not_found }
       end
     end
   end

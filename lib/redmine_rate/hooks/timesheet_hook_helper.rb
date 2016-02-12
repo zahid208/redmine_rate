@@ -9,6 +9,6 @@ module TimesheetHookHelper
   end
 
   def td_cell(html)
-    return content_tag(:td, html, :align => 'right', :class => 'cost')
+    return content_tag(:td, html, align: 'right', class: 'cost')
   end
 end

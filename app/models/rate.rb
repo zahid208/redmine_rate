@@ -126,7 +126,7 @@ class Rate < ActiveRecord::Base
 
   def self.with_common_lockfile(force = false, &block)
     # Wait 1 second after stealing a forced lock
-    options = {:retries => 0, :suspend => 1}
+    options = {retries: 0, suspend: 1}
     options[:max_age] = 1 if force
 
     Lockfile(lock_file, options) do

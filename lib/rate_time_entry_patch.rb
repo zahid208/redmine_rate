@@ -69,7 +69,7 @@ module RateTimeEntryPatch
 
     def recalculate_cost
       clear_cost_cache
-      cost(:store => false)
+      cost(store: false)
       true # for callback
     end
 

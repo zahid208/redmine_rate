@@ -5,10 +5,10 @@ class RateMembershipsHook < Redmine::Hook::ViewListener
 
   def view_users_memberships_table_row(context={})
     return context[:controller].send(:render_to_string, {
-                                       :partial => 'users/membership_rate',
-                                       :locals => {
-                                         :membership => context[:membership],
-                                         :user => context[:user]
+                                       partial: 'users/membership_rate',
+                                       locals: {
+                                         membership: context[:membership],
+                                         user: context[:user]
                                        }})
 
   end

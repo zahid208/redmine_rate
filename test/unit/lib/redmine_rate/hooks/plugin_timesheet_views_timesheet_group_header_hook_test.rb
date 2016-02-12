@@ -20,7 +20,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetGroupHeaderTest < ActionC
   context "#plugin_timesheet_views_timesheet_group_header" do
     should "render the cost table header" do
       @response.body = hook
-      assert_select "th", :text => "Cost"
+      assert_select "th", text: "Cost"
     end
   end
 end

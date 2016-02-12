@@ -20,7 +20,7 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
     end
 
     should 'the assigned rate' do
-      rate = Rate.generate!(:user => @user, :project => @project, :date_in_effect => @date, :amount => 100.0)
+      rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 100.0)
       @time_entry.rate = rate
       assert_equal rate.amount * @time_entry.hours, @time_entry.cost
     end

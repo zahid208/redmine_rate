@@ -4,7 +4,7 @@ module RedmineRate
       def plugin_timesheet_view_timesheets_report_header_tags(context={})
         return content_tag(:style,
                            'tr.missing-rate td.cost { color: red; }',
-                           :type => 'text/css')
+                           type: 'text/css')
       end
     end
   end

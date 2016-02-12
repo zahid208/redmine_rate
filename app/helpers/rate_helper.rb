@@ -8,7 +8,7 @@ module RateHelper
                   rate_sort_link(column,
                                  caption,
                                  default_order,
-                                 { :method => options[:method], :update => options[:update], :user_id => options[:user_id] }),
+                                 { method: options[:method], update: options[:update], user_id: options[:user_id] }),
                   options)
     end
 
@@ -39,12 +39,12 @@ module RateHelper
       end
       caption = column.to_s.humanize unless caption
 
-      sort_options = { :sort => @sort_criteria.add(column.to_s, order).to_param }
+      sort_options = { sort: @sort_criteria.add(column.to_s, order).to_param }
       # don't reuse params if filters are present
       url_options = params.has_key?(:set_filter) ? sort_options : params.merge(sort_options)
 
       # Add project_id to url_options
-      url_options = url_options.merge(:project_id => params[:project_id]) if params.has_key?(:project_id)
+      url_options = url_options.merge(project_id: params[:project_id]) if params.has_key?(:project_id)
 
       ##### Hard code url to the Rates index
       url_options[:controller] = 'rates'
@@ -82,7 +82,7 @@ module RateHelper
       end
       caption = titleize(ActiveSupport::Inflector::humanize(column)) unless caption
 
-      sort_options = { :sort_key => column, :sort_order => order }
+      sort_options = { sort_key: column, sort_order: order }
       # don't reuse params if filters are present
       url_options = params.has_key?(:set_filter) ? sort_options : params.merge(sort_options)
 
@@ -93,8 +93,8 @@ module RateHelper
       #####
 
       link_to_remote(caption,
-                     {:update => options[:update] || "content", :url => url_options, :method => options[:method] || :post},
-                     {:href => url_for(url_options)}) +
+                     {update: options[:update] || "content", url: url_options, method: options[:method] || :post},
+                     {href: url_for(url_options)}) +
         (icon ? nbsp(2) + image_tag(icon) : '')
     end
 
