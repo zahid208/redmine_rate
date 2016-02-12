@@ -12,7 +12,7 @@ class AdminPanelTest < ActionController::IntegrationTest
       'last_cache_clearing_run' => @last_cache_clearing_run
     }
 
-    @user = User.generate!(:admin => true, :password => 'rates', :password_confirmation => 'rates')
+    @user = User.generate!(:password => 'rates', :password_confirmation => 'rates') { |u| u.admin = true }
 
     login_as(@user.login, 'rates')
   end

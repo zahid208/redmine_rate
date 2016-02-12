@@ -24,8 +24,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetsTimeEntryRowClassTest < 
   context "#plugin_timesheet_views_timesheets_time_entry_row_class" do
     context "for users with view rate permission" do
       setup do
-        User.current = User.generate!
-        User.current.admin = true
+        User.current = User.generate! { |u| u.admin = true }
       end
 
       should "render a missing rate css class if the time entry has no cost" do

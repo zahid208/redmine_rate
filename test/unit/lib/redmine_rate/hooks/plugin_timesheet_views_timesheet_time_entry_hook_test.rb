@@ -24,8 +24,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntryTest < ActionCon
   context "#plugin_timesheet_views_timesheet_time_entry" do
     context "for users with view rate permission" do
       should "render a cost cell showing the cost for the time entry" do
-        User.current = User.generate!
-        User.current.admin = true
+        User.current = User.generate! { |u| u.admin = true }
         rate = Rate.generate!(:amount => 100)
         time_entry = TimeEntry.generate!(:hours => 2, :rate => rate)
 
