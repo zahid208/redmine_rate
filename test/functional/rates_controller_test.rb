@@ -270,7 +270,7 @@ class RatesControllerTest < ActionController::TestCase
 
     end
 
-    context "responding to PUT udpate" do
+    context "responding to PUT update" do
 
       context "with valid params" do
         setup do
