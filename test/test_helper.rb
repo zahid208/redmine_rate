@@ -1,8 +1,7 @@
-# Load the normal Rails helper
 require_relative "../../../test/test_helper"
 require_relative "../../../test/object_helpers"
 require_relative "object_helpers"
-require "webrat"
+require "capybara/rails"
 
 ActiveSupport::TestCase.fixture_path = File.dirname(__FILE__) + '/../../../test/fixtures'
 
@@ -10,24 +9,26 @@ class ActiveSupport::TestCase
   fixtures :users, :issues, :projects, :time_entries
 end
 
-Webrat.configure do |config|
-  config.mode = :rails
-end
+class RedmineRateIntegrationTest < Redmine::IntegrationTest
+  include Redmine::I18n
+  include Capybara::DSL
 
-module IntegrationTestHelper
   def login_as(user="existing", password="existing")
     visit "/login"
-    fill_in 'Login', with: user
-    fill_in 'Password', with: password
-    click_button 'login'
-    assert_response :success
-    assert User.current.logged?
+
+    within("#login-form > form") do
+      fill_in "Login", with: user
+      fill_in "Password", with: password
+      find("input[type=submit]").click
+    end
+
+    assert_equal 200, page.status_code
+    assert_equal "/my/page", page.current_path
   end
 
   def logout
-    visit '/logout'
-    assert_response :success
-    assert !User.current.logged?
+    click_link l(:label_logout)
+    assert_equal 200, page.status_code
   end
 
   def assert_forbidden
@@ -39,9 +40,4 @@ module IntegrationTestHelper
     assert_response :success
     assert_template 'account/login'
   end
-
-end
-
-class ActionController::IntegrationTest
-  include IntegrationTestHelper
 end
