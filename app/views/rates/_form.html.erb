@@ -14,7 +14,7 @@
       <td>
         <%= # TODO: move to controller once a hook is in place for the Admin panel
           projects = Project.where(status: Project::STATUS_ACTIVE)
-  
+
           select_tag("rate[project_id]", project_options_for_select_with_selected(projects, @rate.project))
         %>
       </td>

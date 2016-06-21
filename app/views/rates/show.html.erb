@@ -4,12 +4,12 @@
 </p>
 
 <p>
-  <b>User:</b>
+  <b><%= l(:field_user) %>:</b>
   <%=h @rate.user_id %>
 </p>
 
 <p>
-  <b>Project:</b>
+  <b><%= l(:field_project) %>:</b>
   <%=h @rate.project_id %>
 </p>
 
@@ -19,5 +19,5 @@
 </p>
 
 
-<%= link_to 'Edit', edit_rate_path(@rate) %> |
-<%= link_to 'Back', rates_path %>
+<%= link_to l(:button_edit), edit_rate_path(@rate) %> |
+<%= link_to l(:button_back), rates_path %>

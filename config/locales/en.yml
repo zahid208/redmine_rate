@@ -15,4 +15,9 @@ en:
   text_load_missing_caches: "Load Missing Caches"
   text_clear_and_load_all_caches: "Clear and Load All Caches"
   text_caches_loaded_successfully: "Caches loaded successfully"
-
+  rate_error_creating_new_rate: Error creating a new Rate.
+  rate_created_message: Rate was successfully created.
+  rate_updated_message: Rate was successfully updated.
+  rate_locked_message:  Rate is locked and cannot be edited
+  permission_view_rate: Show rate
+  rate_label_edit_rate: Edit rate

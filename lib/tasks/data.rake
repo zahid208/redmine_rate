@@ -8,16 +8,16 @@ namespace :rate_plugin do
   namespace :budget do
     desc "Export the values of the Budget plugin to a file before installing the rate plugin"
     task :pre_install_export => :environment do
-      
+
       unless Redmine::Plugin.registered_plugins[:budget_plugin].version == "0.1.0"
         puts "ERROR: This task is only needed when upgrading Budget from version 0.1.0 to version 0.2.0"
         return false
       end
-      
+
       rates = ''
       # Rate for members
       Member.where('rate IS NOT NULL').each do |member|
-        
+
         rates << {
           :user_id => member.user_id,
           :project_id => member.project_id,
@@ -29,11 +29,11 @@ namespace :rate_plugin do
       File.open(RateConversion::MemberRateDataFile, 'w') do |file|
         file.puts rates
       end
-      
+
       # HourlyDeliverable.spent and FixedDeliverable.spent
       deliverables = ''
       Deliverable.find(:all).each do |deliverable|
-        deliverables << { 
+        deliverables << {
           :id => deliverable.id,
           :spent => deliverable.spent
         }.to_yaml
@@ -43,7 +43,7 @@ namespace :rate_plugin do
         file.puts deliverables
       end
     end
-    
+
     desc "Check the values of the export"
     task :post_install_check => :environment do
 
@@ -51,7 +51,7 @@ namespace :rate_plugin do
         puts "ERROR: Please upgrade the budget_plugin to 0.2.0 now"
         return false
       end
-      
+
       counter = 0
       # Member Rates
       File.open(RateConversion::MemberRateDataFile) do |file|
@@ -75,13 +75,13 @@ namespace :rate_plugin do
           id = deliverable_export[:id]
           spent = deliverable_export[:spent]
           deliverable = Deliverable.find(id)
-          
+
           counter += 1 unless RateConversion.compare_values(spent, deliverable.spent, "Deliverable #{id}'s spent is off")
         }
       end
 
       if counter > 0
-        puts "#{counter} errors found." 
+        puts "#{counter} errors found."
       else
         puts "No Budget conversation errors found, congrats."
       end
@@ -91,16 +91,16 @@ namespace :rate_plugin do
   namespace :billing do
     desc "Export the values of the Billing plugin to a file before installing the rate plugin"
     task :pre_install_export => :environment do
-      
+
       unless Redmine::Plugin.registered_plugins[:redmine_billing].version == "0.0.1"
         puts "ERROR: This task is only needed when upgrading Billing from version 0.0.1 to version 0.3.0"
         return false
       end
-      
+
       invoices = ''
-      
+
       FixedVendorInvoice.find(:all).each do |invoice|
-        invoices << { 
+        invoices << {
           :id => invoice.id,
           :number => invoice.number,
           :amount => invoice.amount,
@@ -110,7 +110,7 @@ namespace :rate_plugin do
       end
 
       HourlyVendorInvoice.find(:all).each do |invoice|
-        invoices << { 
+        invoices << {
           :id => invoice.id,
           :number => invoice.number,
           :amount => invoice.amount_for_user,
@@ -123,7 +123,7 @@ namespace :rate_plugin do
         file.puts invoices
       end
     end
-    
+
     desc "Check the values of the export"
     task :post_install_check => :environment do
 
@@ -131,7 +131,7 @@ namespace :rate_plugin do
         puts "ERROR: Please upgrade the billing_plugin to 0.3.0 now"
         return false
       end
-      
+
       counter = 0
 
       File.open(RateConversion::VendorInvoiceDataFile) do |file|
@@ -147,13 +147,13 @@ namespace :rate_plugin do
             else
               counter += 1 unless RateConversion.compare_values(invoice_export[:amount], invoice.amount_for_user, "VendorInvoice #{invoice.id}'s amount is off")
             end
-            
+
           end
         }
       end
 
       if counter > 0
-        puts "#{counter} errors found." 
+        puts "#{counter} errors found."
       else
         puts "No Billing conversation errors found, congrats."
       end

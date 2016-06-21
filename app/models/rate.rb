@@ -1,7 +1,6 @@
 require 'lockfile'
 
 class Rate < ActiveRecord::Base
-  unloadable
   class InvalidParameterException < Exception; end
   CACHING_LOCK_FILE_NAME = 'rate_cache'
 
@@ -21,19 +20,19 @@ class Rate < ActiveRecord::Base
   scope :history_for_user, lambda { |user, order| where(user_id: user.id).order(order).includes(:project) }
 
   def locked?
-    return self.time_entries.length > 0
+    !time_entries.empty?
   end
 
   def unlocked?
-    return !self.locked?
+    !locked?
   end
 
   def default?
-    return self.project.nil?
+    project.nil?
   end
 
   def specific?
-    return !self.default?
+    !default?
   end
 
   def update_time_entry_cost_cache
@@ -43,11 +42,7 @@ class Rate < ActiveRecord::Base
   # API to find the Rate for a +user+ on a +project+ at a +date+
   def self.for(user, project = nil, date = Date.today.to_s)
     # Check input since it's a "public" API
-    if Object.const_defined? 'Group' # 0.8.x compatibility
-      raise Rate::InvalidParameterException.new("user must be a Principal instance") unless user.is_a?(Principal)
-    else
-      raise Rate::InvalidParameterException.new("user must be a User instance") unless user.is_a?(User)
-    end
+    raise Rate::InvalidParameterException.new("user must be a Principal instance") unless user.is_a?(Principal)
     raise Rate::InvalidParameterException.new("project must be a Project instance") unless project.nil? || project.is_a?(Project)
     Rate.check_date_string(date)
 
@@ -60,12 +55,11 @@ class Rate < ActiveRecord::Base
   # API to find the amount for a +user+ on a +project+ at a +date+
   def self.amount_for(user, project = nil, date = Date.today.to_s)
     rate = self.for(user, project, date)
-
     return nil if rate.nil?
-    return rate.amount
+    rate.amount
   end
 
-  def self.update_all_time_entries_with_missing_cost(options={})
+  def self.update_all_time_entries_with_missing_cost(options = {})
     with_common_lockfile(options[:force]) do
       TimeEntry.where(cost: nil).each do |time_entry|
         begin
@@ -78,7 +72,7 @@ class Rate < ActiveRecord::Base
     store_cache_timestamp('last_caching_run', Time.now.utc.to_s)
   end
 
-  def self.update_all_time_entries_to_refresh_cache(options={})
+  def self.update_all_time_entries_to_refresh_cache(options = {})
     with_common_lockfile(options[:force]) do
       TimeEntry.find_each do |time_entry| # batch find
         begin
@@ -92,6 +86,7 @@ class Rate < ActiveRecord::Base
   end
 
   private
+
   def self.for_user_project_and_date(user, project, date)
     if project.nil?
       return Rate.where("user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL", user.id, date)
@@ -105,7 +100,7 @@ class Rate < ActiveRecord::Base
   end
 
   def self.default_for_user_and_date(user, date)
-    self.for_user_project_and_date(user, nil, date)
+    for_user_project_and_date(user, nil, date)
   end
 
   # Checks a date string to make sure it is in format of +YYYY-MM-DD+, throwing
