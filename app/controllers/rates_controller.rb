@@ -127,14 +127,12 @@ class RatesController < ApplicationController
   end
 
   def require_user_id
-    begin
-      @user = User.find(params[:user_id])
-    rescue ActiveRecord::RecordNotFound
-      respond_to do |format|
-        flash[:error] = l(:rate_error_user_not_found)
-        format.html { redirect_to(home_url) }
-        format.xml  { render xml: 'User not found', status: :not_found }
-      end
+    @user = User.find(params[:user_id])
+  rescue ActiveRecord::RecordNotFound
+    respond_to do |format|
+      flash[:error] = l(:rate_error_user_not_found)
+      format.html { redirect_to(home_url) }
+      format.xml  { render xml: 'User not found', status: :not_found }
     end
   end
 
