@@ -1,7 +1,7 @@
-require_relative "../../../test/test_helper"
-require_relative "../../../test/object_helpers"
-require_relative "object_helpers"
-require "capybara/rails"
+require_relative '../../../test/test_helper'
+require_relative '../../../test/object_helpers'
+require_relative 'object_helpers'
+require 'capybara/rails'
 
 ActiveSupport::TestCase.fixture_path = File.dirname(__FILE__) + '/../../../test/fixtures'
 
@@ -13,17 +13,17 @@ class RedmineRateIntegrationTest < Redmine::IntegrationTest
   include Redmine::I18n
   include Capybara::DSL
 
-  def login_as(user="existing", password="existing")
-    visit "/login"
+  def login_as(user = 'existing', password = 'existing')
+    visit '/login'
 
-    within("#login-form > form") do
-      fill_in "Login", with: user
-      fill_in "Password", with: password
-      find("input[type=submit]").click
+    within('#login-form > form') do
+      fill_in 'Login', with: user
+      fill_in 'Password', with: password
+      find('input[type=submit]').click
     end
 
     assert_equal 200, page.status_code
-    assert_equal "/my/page", page.current_path
+    assert_equal '/my/page', page.current_path
   end
 
   def logout

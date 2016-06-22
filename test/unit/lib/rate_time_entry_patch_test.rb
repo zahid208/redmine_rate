@@ -1,11 +1,11 @@
-require_relative "../../test_helper"
+require_relative '../../test_helper'
 
 class RateTimeEntryPatchTest < ActiveSupport::TestCase
   def setup
     @user = User.generate!
     @project = Project.generate!
     @date = Date.today.to_s
-    @time_entry = TimeEntry.new({user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!})
+    @time_entry = TimeEntry.new(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
     @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
   end
 
@@ -24,47 +24,43 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
       @time_entry.rate = rate
       assert_equal rate.amount * @time_entry.hours, @time_entry.cost
     end
-
   end
 
-  context "#cost" do
+  context '#cost' do
     setup do
       @time_entry.save!
     end
 
-    context "without a cache" do
-      should "return the calculated cost" do
+    context 'without a cache' do
+      should 'return the calculated cost' do
         @time_entry.update_attribute(:cost, nil)
         assert_equal 2000.0, @time_entry.cost
       end
 
-      should "cache the cost to the field" do
+      should 'cache the cost to the field' do
         @time_entry.update_attribute(:cost, nil)
         @time_entry.cost
 
         assert_equal 2000.0, @time_entry.read_attribute(:cost)
         assert_equal 2000.0, @time_entry.reload.read_attribute(:cost)
       end
-
     end
 
-    context "with a cache" do
+    context 'with a cache' do
       setup do
         @time_entry.update_attribute(:cost, 2000.0)
         @time_entry.reload
       end
 
-      should "return the cached cost" do
+      should 'return the cached cost' do
         assert_equal 2000.0, @time_entry.read_attribute(:cost)
         assert_equal 2000.0, @time_entry.cost
       end
-
     end
-
   end
 
-  context "before save" do
-    should "clear and recalculate the cache" do
+  context 'before save' do
+    should 'clear and recalculate the cache' do
       assert_equal nil, @time_entry.read_attribute(:cost)
 
       assert @time_entry.save
@@ -72,7 +68,7 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
       assert_equal 2000.0, @time_entry.read_attribute(:cost)
     end
 
-    should "clear and recalculate the cache when the attribute is already set but stale" do
+    should 'clear and recalculate the cache when the attribute is already set but stale' do
       # Set the cost
       assert @time_entry.save
       assert_equal 2000.0, @time_entry.read_attribute(:cost)
@@ -84,9 +80,5 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
       assert_equal 4000.0, @time_entry.read_attribute(:cost)
       assert_equal 4000.0, @time_entry.reload.cost
     end
-
-
   end
-
-
 end

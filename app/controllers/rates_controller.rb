@@ -133,7 +133,7 @@ class RatesController < ApplicationController
       respond_to do |format|
         flash[:error] = l(:rate_error_user_not_found)
         format.html { redirect_to(home_url) }
-        format.xml  { render xml: "User not found", status: :not_found }
+        format.xml  { render xml: 'User not found', status: :not_found }
       end
     end
   end
@@ -149,7 +149,7 @@ class RatesController < ApplicationController
     whitelist = %r{(rates|/users/edit)}
 
     back_url = CGI.unescape(params[:back_url].to_s)
-    if !back_url.blank?
+    unless back_url.blank?
       begin
         uri = URI.parse(back_url)
         if uri.path && uri.path.match(whitelist)
@@ -158,7 +158,7 @@ class RatesController < ApplicationController
         end
       rescue URI::InvalidURIError
         # redirect to default
-        logger.debug("Invalid URI sent to redirect_back_or_default: " + params[:back_url].inspect)
+        logger.debug('Invalid URI sent to redirect_back_or_default: ' + params[:back_url].inspect)
       end
     end
     redirect_to default

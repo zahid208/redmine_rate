@@ -1,4 +1,4 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
 
 class RatesControllerTest < ActionController::TestCase
   setup do
@@ -16,18 +16,16 @@ class RatesControllerTest < ActionController::TestCase
       assert_template 'common/error'
     end
 
-    context "with mime type of xml" do
-
-      should "should return an forbidden error" do
-        @request.env["HTTP_ACCEPT"] = "application/xml"
+    context 'with mime type of xml' do
+      should 'should return an forbidden error' do
+        @request.env['HTTP_ACCEPT'] = 'application/xml'
         instance_eval(&block)
         assert_response :forbidden
       end
     end
-
   end
 
-  def mock_rate(stubs={})
+  def mock_rate(stubs = {})
     @project = Project.generate!
     stubs = {
       date_in_effect: Date.today,
@@ -38,44 +36,44 @@ class RatesControllerTest < ActionController::TestCase
     @mock_rate = Rate.generate!(stubs)
   end
 
-  def mock_locked_rate(stubs={})
+  def mock_locked_rate(stubs = {})
     @mock_rate = mock_rate
     @mock_rate.time_entries << TimeEntry.generate!
     @mock_rate
   end
 
-  context "as regular user" do
+  context 'as regular user' do
     setup do
       @user = User.generate!
       @request.session[:user_id] = @user.id
     end
 
-    context "responding to GET index" do
+    context 'responding to GET index' do
       should_be_unauthorized { get :index }
     end
 
-    context "responding to GET show" do
-      should_be_unauthorized { get :show, id: "37" }
+    context 'responding to GET show' do
+      should_be_unauthorized { get :show, id: '37' }
     end
 
-    context "responding to GET new" do
+    context 'responding to GET new' do
       should_be_unauthorized { get :new }
     end
 
-    context "responding to GET edit" do
-      should_be_unauthorized { get :edit, id: "37" }
+    context 'responding to GET edit' do
+      should_be_unauthorized { get :edit, id: '37' }
     end
 
-    context "responding to POST create" do
-      should_be_unauthorized { post :create, rate: {these: 'params'} }
+    context 'responding to POST create' do
+      should_be_unauthorized { post :create, rate: { these: 'params' } }
     end
 
-    context "responding to PUT update" do
-      should_be_unauthorized { put :update, id: "37", rate: {these: 'params'} }
+    context 'responding to PUT update' do
+      should_be_unauthorized { put :update, id: '37', rate: { these: 'params' } }
     end
 
-    context "responding to DELETE destroy" do
-      should_be_unauthorized { delete :destroy, id: "37" }
+    context 'responding to DELETE destroy' do
+      should_be_unauthorized { delete :destroy, id: '37' }
     end
   end
 

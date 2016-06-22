@@ -1,4 +1,4 @@
-require_relative "../../../../test_helper"
+require_relative '../../../../test_helper'
 
 class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < ActionController::TestCase
   include Redmine::Hook::Helper
@@ -17,13 +17,13 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < Action
     @request ||= ActionController::TestRequest.new
   end
 
-  def hook(args={})
+  def hook(args = {})
     call_hook :plugin_timesheet_views_timesheet_time_entry_sum, args
   end
 
-  context "#plugin_timesheet_views_timesheet_time_entry_sum" do
-    context "for users with view rate permission" do
-      should "render a cost cell showing the total cost for the time entries" do
+  context '#plugin_timesheet_views_timesheet_time_entry_sum' do
+    context 'for users with view rate permission' do
+      should 'render a cost cell showing the total cost for the time entries' do
         User.current = User.generate! { |u| u.admin = true }
         rate = Rate.generate!(amount: 100)
         time_entry1 = TimeEntry.generate!(hours: 2, rate: rate)
@@ -31,13 +31,12 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < Action
 
         @response.body = hook(time_entries: [time_entry1, time_entry2])
 
-        assert_select 'td', text: "$1,200.00"
-
+        assert_select 'td', text: '$1,200.00'
       end
     end
 
-    context "for users without view rate permission" do
-      should "render an empty cost cell" do
+    context 'for users without view rate permission' do
+      should 'render an empty cost cell' do
         User.current = nil
         rate = Rate.generate!(amount: 100)
         time_entry = TimeEntry.generate!(hours: 2, rate: rate)
@@ -45,7 +44,6 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < Action
         @response.body = hook(time_entries: [time_entry])
 
         assert_select 'td', text: '$0.00'
-
       end
     end
   end

@@ -11,10 +11,10 @@ de:
   text_rate_caches_panel: "Stundensatz-Cache"
   text_no_cache_run: "Kein Cache gefunden"
   text_last_caching_run: "Zuletzt Cache erstellt: "
-  text_last_cache_clearing_run: "Last cache clearing run at: "
-  text_load_missing_caches: "Load Missing Caches"
-  text_clear_and_load_all_caches: "Clear and Load All Caches"
-  text_caches_loaded_successfully: "Caches loaded successfully"
+  text_last_cache_clearing_run: "Zuletzt Cache gelöscht: "
+  text_load_missing_caches: "Nicht-gecachte Daten in Cache laden"
+  text_clear_and_load_all_caches: "Neuladen des Cache"
+  text_caches_loaded_successfully: "Cache erfolgreich geladen"
   rate_error_creating_new_rate: Ein Fehler ist bei der Zuweisung des Stundensatzes aufgetreten.
   rate_created_message: Der Stundensatz wurde erfolgreich angelegt.
   rate_updated_message: Der Stundensatz wurde erfolgreich aktualisiert.

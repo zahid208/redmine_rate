@@ -3,12 +3,12 @@ module RateHelper
   def rate_sort_header_tag(column, options = {})
     caption = options.delete(:caption) || titleize(ActiveSupport::Inflector::humanize(column))
     default_order = options.delete(:default_order) || 'asc'
-    options[:title]= l(:label_sort_by, "\"#{caption}\"") unless options[:title]
+    options[:title] = l(:label_sort_by, "\"#{caption}\"") unless options[:title]
     content_tag('th',
                 rate_sort_link(column,
                                caption,
                                default_order,
-                               { method: options[:method], update: options[:update], user_id: options[:user_id] }),
+                               method: options[:method], update: options[:update], user_id: options[:user_id]),
                 options)
   end
 

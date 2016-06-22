@@ -2,7 +2,7 @@ require 'lockfile'
 
 class Rate < ActiveRecord::Base
   class InvalidParameterException < Exception; end
-  CACHING_LOCK_FILE_NAME = 'rate_cache'
+  CACHING_LOCK_FILE_NAME = 'rate_cache'.freeze
 
   belongs_to :project
   belongs_to :user

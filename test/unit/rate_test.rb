@@ -1,11 +1,11 @@
-require_relative "../test_helper"
+require_relative '../test_helper'
 
 class RateTest < ActiveSupport::TestCase
   def rate_valid_attributes
     {
       user: User.generate!,
       project: Project.generate!,
-      date_in_effect: Date.new(Date.today.year, 1, 1),
+      date_in_effect: Date.new(Time.zone.today.year, 1, 1),
       amount: 100.50
     }
   end
@@ -22,7 +22,6 @@ class RateTest < ActiveSupport::TestCase
   should validate_presence_of :date_in_effect
   should validate_numericality_of :amount
 
-
   context '#locked?' do
     should 'should be true if a Time Entry is associated' do
       rate = Rate.new
@@ -32,27 +31,24 @@ class RateTest < ActiveSupport::TestCase
 
     should 'should be false if no Time Entries are associated' do
       rate = Rate.new
-      assert ! rate.locked?
+      assert !rate.locked?
     end
   end
-
 
   context '#unlocked?' do
     should 'should be false if a Time Entry is associated' do
       rate = Rate.new
       rate.time_entries << TimeEntry.generate!
-      assert ! rate.unlocked?
+      assert !rate.unlocked?
     end
 
     should 'should be true if no Time Entries are associated' do
       rate = Rate.new
       assert rate.unlocked?
     end
-
   end
 
   context '#save' do
-
     should 'should save if a Rate is unlocked' do
       rate = Rate.new(rate_valid_attributes)
       assert rate.save
@@ -65,17 +61,12 @@ class RateTest < ActiveSupport::TestCase
     end
   end
 
-
-
-
   context '#destroy' do
-
     should 'should destroy the Rate if should is unlocked' do
       rate = Rate.create(rate_valid_attributes)
       assert_difference('Rate.count', -1) do
         rate.destroy
       end
-
     end
 
     should 'should not destroy the Rate if should is locked' do
@@ -88,16 +79,15 @@ class RateTest < ActiveSupport::TestCase
     end
   end
 
-  context "after save" do
-    should "recalculate all of the cached cost of all Time Entries for the user" do
+  context 'after save' do
+    should 'recalculate all of the cached cost of all Time Entries for the user' do
       @user = User.generate!
       @project = Project.generate!
       @date = Date.today.to_s
       @past_date = 1.month.ago.strftime('%Y-%m-%d')
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
-      @time_entry1 = TimeEntry.generate!({user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!})
-      @time_entry2 = TimeEntry.generate!({user: @user, project: @project, spent_on: @past_date, hours: 20.0, activity: TimeEntryActivity.generate!})
-
+      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @past_date, hours: 20.0, activity: TimeEntryActivity.generate!)
 
       assert_equal 2000.00, @time_entry1.cost
       assert_equal 0, @time_entry2.cost
@@ -107,11 +97,10 @@ class RateTest < ActiveSupport::TestCase
       assert_equal 2000.00, TimeEntry.find(@time_entry1.id).cost
       assert_equal 200.00, TimeEntry.find(@time_entry2.id).cost
     end
-
   end
 
-  context "after destroy" do
-    should "recalculate all of the cached cost of all Time Entries for the user" do
+  context 'after destroy' do
+    should 'recalculate all of the cached cost of all Time Entries for the user' do
       @user = User.generate!
       @project = Project.generate!
       @date = Date.today.to_s
@@ -119,9 +108,8 @@ class RateTest < ActiveSupport::TestCase
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
       @old_rate = Rate.generate!(user: @user, project: @project, date_in_effect: 2.months.ago.strftime('%Y-%m-%d'), amount: 10.0)
 
-      @time_entry1 = TimeEntry.generate!({user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!})
-      @time_entry2 = TimeEntry.generate!({user: @user, project: @project, spent_on: @past_date, hours: 20.0, activity: TimeEntryActivity.generate!})
-
+      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @past_date, hours: 20.0, activity: TimeEntryActivity.generate!)
 
       assert_equal 2000.00, @time_entry1.cost
       assert_equal 2000.00, @time_entry1.read_attribute(:cost)
@@ -133,7 +121,6 @@ class RateTest < ActiveSupport::TestCase
       assert_equal 2000.0, TimeEntry.find(@time_entry1.id).cost
       assert_equal 0, TimeEntry.find(@time_entry2.id).cost
     end
-
   end
 
   context '#for' do
@@ -172,7 +159,6 @@ class RateTest < ActiveSupport::TestCase
           Rate.for(@user, nil, @date)
         end
       end
-
     end
 
     context 'returns' do
@@ -271,36 +257,35 @@ class RateTest < ActiveSupport::TestCase
         Rate.for(@user, @project, '2000-13-40')
       end
     end
-
   end
 
-  context "#update_all_time_entries_with_missing_cost" do
+  context '#update_all_time_entries_with_missing_cost' do
     setup do
       @user = User.generate!
       @project = Project.generate!
       @date = Date.today.to_s
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
-      @time_entry1 = TimeEntry.generate!({user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!})
-      @time_entry2 = TimeEntry.generate!({user: @user, project: @project, spent_on: @date, hours: 20.0, activity: TimeEntryActivity.generate!})
+      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 20.0, activity: TimeEntryActivity.generate!)
     end
 
-    should "update the caches of all Time Entries" do
+    should 'update the caches of all Time Entries' do
       TimeEntry.update_all cost: nil
       Rate.update_all_time_entries_with_missing_cost
       assert_empty TimeEntry.where cost: nil
     end
 
-    should "timestamp a successful run" do
+    should 'timestamp a successful run' do
       assert_equal nil, Setting.plugin_redmine_rate['last_caching_run']
 
       Rate.update_all_time_entries_with_missing_cost
 
-      assert Setting.plugin_redmine_rate['last_caching_run'], "Last run not timestamped"
-      assert Time.parse(Setting.plugin_redmine_rate['last_caching_run']), "Last run timestamp not parseable"
+      assert Setting.plugin_redmine_rate['last_caching_run'], 'Last run not timestamped'
+      assert Time.parse(Setting.plugin_redmine_rate['last_caching_run']), 'Last run timestamp not parseable'
     end
   end
 
-  context "#update_all_time_entries_to_refresh_cache" do
+  context '#update_all_time_entries_to_refresh_cache' do
     setup do
       @user = User.generate!
       @project = Project.generate!
@@ -309,24 +294,24 @@ class RateTest < ActiveSupport::TestCase
       # Get rid of the fixtures we load in our test_helper since they have no cost
       TimeEntry.delete_all
 
-      @time_entry1 = TimeEntry.generate!({user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!})
-      @time_entry2 = TimeEntry.generate!({user: @user, project: @project, spent_on: @date, hours: 20.0, activity: TimeEntryActivity.generate!})
+      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 20.0, activity: TimeEntryActivity.generate!)
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
     end
 
-    should "update the caches of all Time Entries" do
+    should 'update the caches of all Time Entries' do
       assert_empty TimeEntry.where cost: nil
       Rate.update_all_time_entries_to_refresh_cache
       assert_empty TimeEntry.where cost: nil
     end
 
-    should "timestamp a successful run" do
+    should 'timestamp a successful run' do
       assert_equal nil, Setting.plugin_redmine_rate['last_cache_clearing_run']
 
       Rate.update_all_time_entries_to_refresh_cache
 
-      assert Setting.plugin_redmine_rate['last_cache_clearing_run'], "Last run not timestamped"
-      assert Time.parse(Setting.plugin_redmine_rate['last_cache_clearing_run']), "Last run timestamp not parseable"
+      assert Setting.plugin_redmine_rate['last_cache_clearing_run'], 'Last run not timestamped'
+      assert Time.parse(Setting.plugin_redmine_rate['last_cache_clearing_run']), 'Last run timestamp not parseable'
     end
   end
 end

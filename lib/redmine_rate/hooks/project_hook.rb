@@ -11,8 +11,8 @@ module RedmineRate
       # * project: Current project
       #
       def view_projects_settings_members_table_header(context = {})
-        return '' unless (User.current.allowed_to?(:view_rate, context[:project]) || User.current.admin?)
-        return "<th>#{l(:rate_label_rate)} #{l(:rate_label_currency)}</td>"
+        return '' unless User.current.allowed_to?(:view_rate, context[:project]) || User.current.admin?
+        "<th>#{l(:rate_label_rate)} #{l(:rate_label_currency)}</td>"
       end
 
       # Renders an AJAX from to update the member's billing rate
@@ -26,7 +26,7 @@ module RedmineRate
         member = context[:member]
         project = context[:project]
 
-        return '' unless (User.current.allowed_to?(:view_rate, project) || User.current.admin?)
+        return '' unless User.current.allowed_to?(:view_rate, project) || User.current.admin?
 
         # Groups cannot have a rate
         return content_tag(:td, '') if member.principal.is_a? Group
@@ -39,7 +39,7 @@ module RedmineRate
             content << "<em>#{number_to_currency(rate.amount)}</em> ".html_safe
           end
 
-          if (User.current.admin?)
+          if User.current.admin?
 
           url = {
             controller: 'rates',
@@ -56,15 +56,15 @@ module RedmineRate
           form << hidden_field(:rate, :date_in_effect, value: Date.today.to_s)
           form << hidden_field(:rate, :project_id, value: project.id)
           form << hidden_field(:rate, :user_id, value: member.user.id)
-          form << hidden_field_tag("back_url", url_for(controller: 'projects', action: 'settings', id: project, tab: 'members', protocol: Setting.protocol, host: Setting.host_name))
+          form << hidden_field_tag('back_url', url_for(controller: 'projects', action: 'settings', id: project, tab: 'members', protocol: Setting.protocol, host: Setting.host_name))
 
-          form << submit_tag(l(:rate_label_set_rate), class: "small")
-          form << "</form>".html_safe
+          form << submit_tag(l(:rate_label_set_rate), class: 'small')
+          form << '</form>'.html_safe
 
           content << form
           end
         else
-          if (User.current.admin?)
+          if User.current.admin?
 
           content << content_tag(:strong, link_to(number_to_currency(rate.amount), {
                                                     controller: 'users',
@@ -78,7 +78,7 @@ module RedmineRate
             content << content_tag(:strong, number_to_currency(rate.amount))
           end
         end
-        return content_tag(:td, content, align: 'left', id: "rate_#{project.id}_#{member.user.id}" ).html_safe
+        content_tag(:td, content, align: 'left', id: "rate_#{project.id}_#{member.user.id}").html_safe
       end
 
       def model_project_copy_before_save(context = {})
