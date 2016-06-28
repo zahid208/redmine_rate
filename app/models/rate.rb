@@ -40,20 +40,20 @@ class Rate < ActiveRecord::Base
   end
 
   # API to find the Rate for a +user+ on a +project+ at a +date+
-  def self.for(user, project = nil, date = Date.today.to_s)
+  def self.for(user, project = nil, date = Time.zone.today.to_s)
     # Check input since it's a "public" API
-    raise Rate::InvalidParameterException.new("user must be a Principal instance") unless user.is_a?(Principal)
-    raise Rate::InvalidParameterException.new("project must be a Project instance") unless project.nil? || project.is_a?(Project)
+    raise Rate::InvalidParameterException.new('user must be a Principal instance') unless user.is_a?(Principal)
+    raise Rate::InvalidParameterException.new('project must be a Project instance') unless project.nil? || project.is_a?(Project)
     Rate.check_date_string(date)
 
-    rate = self.for_user_project_and_date(user, project, date)
+    rate = for_user_project_and_date(user, project, date)
     # Check for a default (non-project) rate
-    rate = self.default_for_user_and_date(user, date) if rate.nil? && project
+    rate = default_for_user_and_date(user, date) if rate.nil? && project
     rate
   end
 
   # API to find the amount for a +user+ on a +project+ at a +date+
-  def self.amount_for(user, project = nil, date = Date.today.to_s)
+  def self.amount_for(user, project = nil, date = Time.zone.today.to_s)
     rate = self.for(user, project, date)
     return nil if rate.nil?
     rate.amount

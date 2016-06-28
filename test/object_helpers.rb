@@ -9,7 +9,7 @@ module ObjectHelper
   def Rate.generate(options = {})
     rate = Rate.new options
     rate.user_id ||= User.generate!.id
-    rate.date_in_effect ||= Date.today
+    rate.date_in_effect ||= Time.zone.today
     rate.amount ||= 200
     rate
   end

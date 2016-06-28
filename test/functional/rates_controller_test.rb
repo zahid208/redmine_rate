@@ -28,7 +28,7 @@ class RatesControllerTest < ActionController::TestCase
   def mock_rate(stubs = {})
     @project = Project.generate!
     stubs = {
-      date_in_effect: Date.today,
+      date_in_effect: Time.zone.today,
       project: @project,
       amount: 100.0,
       user: @user
@@ -217,19 +217,19 @@ class RatesControllerTest < ActionController::TestCase
         end
 
         should 'should expose a newly created rate as @rate' do
-          post :create, rate: { project_id: @project.id, amount: '50', date_in_effect: Date.today.to_s, user_id: @user.id }
+          post :create, rate: { project_id: @project.id, amount: '50', date_in_effect: Time.zone.today.to_s, user_id: @user.id }
           assert assigns(:rate)
         end
 
         should 'should redirect to the rate list' do
-          post :create, rate: { project_id: @project.id, amount: '50', date_in_effect: Date.today.to_s, user_id: @user.id }
+          post :create, rate: { project_id: @project.id, amount: '50', date_in_effect: Time.zone.today.to_s, user_id: @user.id }
 
           assert_redirected_to rates_url(user_id: @user.id)
         end
 
         should 'should redirect to the back_url if set' do
           back_url = '/rates'
-          post :create, rate: { project_id: @project.id, amount: '50', date_in_effect: Date.today.to_s, user_id: @user.id }, back_url: back_url
+          post :create, rate: { project_id: @project.id, amount: '50', date_in_effect: Time.zone.today.to_s, user_id: @user.id }, back_url: back_url
 
           assert_redirected_to back_url
         end

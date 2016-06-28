@@ -53,10 +53,15 @@ module RedmineRate
           form = form_tag url, remote: true
 
           form << text_field(:rate, :amount)
-          form << hidden_field(:rate, :date_in_effect, value: Date.today.to_s)
+          form << hidden_field(:rate, :date_in_effect, value: Time.zone.today.to_s)
           form << hidden_field(:rate, :project_id, value: project.id)
           form << hidden_field(:rate, :user_id, value: member.user.id)
-          form << hidden_field_tag('back_url', url_for(controller: 'projects', action: 'settings', id: project, tab: 'members', protocol: Setting.protocol, host: Setting.host_name))
+          form << hidden_field_tag('back_url', url_for(controller: 'projects',
+                                                       action: 'settings',
+                                                       id: project,
+                                                       tab: 'members',
+                                                       protocol: Setting.protocol,
+                                                       host: Setting.host_name))
 
           form << submit_tag(l(:rate_label_set_rate), class: 'small')
           form << '</form>'.html_safe
@@ -65,15 +70,13 @@ module RedmineRate
           end
         else
           if User.current.admin?
-
-          content << content_tag(:strong, link_to(number_to_currency(rate.amount), {
+            content << content_tag(:strong, link_to(number_to_currency(rate.amount),
                                                     controller: 'users',
                                                     action: 'edit',
                                                     id: member.user,
                                                     tab: 'rates',
                                                     protocol: Setting.protocol,
-                                                    host: Setting.host_name
-                                                  }))
+                                                    host: Setting.host_name))
           else
             content << content_tag(:strong, number_to_currency(rate.amount))
           end
@@ -88,7 +91,7 @@ module RedmineRate
         Rate.where(project_id: source.id).each do |source_rate|
           destination_rate = Rate.new
 
-          destination_rate.attributes = source_rate.attributes.except("project_id")
+          destination_rate.attributes = source_rate.attributes.except('project_id')
           destination_rate.project = destination
           destination_rate.save # Need to save here because there is no relation on project to rate
         end

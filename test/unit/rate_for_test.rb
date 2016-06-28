@@ -15,7 +15,7 @@ class RateForTest < ActiveSupport::TestCase
 
     context 'a user with one default Rate' do
       should 'should return the Rate if the Rate is effective today' do
-        rate = Rate.create!(user_id: @user.id, amount: 100.0, date_in_effect: Date.today)
+        rate = Rate.create!(user_id: @user.id, amount: 100.0, date_in_effect: Time.zone.today)
         assert_equal rate, Rate.for(@user)
       end
 
@@ -25,14 +25,14 @@ class RateForTest < ActiveSupport::TestCase
 
       should 'should return the same default Rate on all projects' do
         project = Project.generate!
-        rate = Rate.create!(user_id: @user.id, amount: 100.0, date_in_effect: Date.today)
+        rate = Rate.create!(user_id: @user.id, amount: 100.0, date_in_effect: Time.zone.today)
         assert_equal rate, Rate.for(@user, project)
       end
     end
 
     context 'a user with two default Rates' do
       should 'should return the newest Rate before the todays date' do
-        rate = Rate.create!(user_id: @user.id, amount: 300.0, date_in_effect: Date.today)
+        rate = Rate.create!(user_id: @user.id, amount: 300.0, date_in_effect: Time.zone.today)
         assert_equal rate, Rate.for(@user)
       end
     end
@@ -46,7 +46,7 @@ class RateForTest < ActiveSupport::TestCase
 
       should 'should return the default Rate if the project Rate isnt effective yet but the default Rate is' do
         project = Project.generate!
-        rate = Rate.create!(user_id: @user.id, amount: 300.0, date_in_effect: Date.today)
+        rate = Rate.create!(user_id: @user.id, amount: 300.0, date_in_effect: Time.zone.today)
         assert_equal rate, Rate.for(@user, project)
       end
 
@@ -59,7 +59,7 @@ class RateForTest < ActiveSupport::TestCase
     context 'a user with two Rates on a project' do
       should 'should return the newest Rate before the todays date' do
         project = Project.generate!
-        rate = Rate.create!(user_id: @user.id, project: project, amount: 300.0, date_in_effect: Date.today)
+        rate = Rate.create!(user_id: @user.id, project: project, amount: 300.0, date_in_effect: Time.zone.today)
         assert_equal rate, Rate.for(@user, project)
       end
     end

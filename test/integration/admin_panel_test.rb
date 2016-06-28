@@ -52,7 +52,7 @@ class AdminPanelTest < RedmineRateIntegrationTest
 
       assert_equal 200, status_code
 
-      appx_clear_time = Date.today.strftime('%m/%d/%Y')
+      appx_clear_time = Time.zone.today.strftime('%m/%d/%Y')
 
       assert_selector '#caching-run' do
         assert_selector 'p', text: /#{appx_clear_time}/
@@ -66,7 +66,7 @@ class AdminPanelTest < RedmineRateIntegrationTest
 
       assert_equal 200, status_code
 
-      appx_clear_time = Date.today.strftime('%m/%d/%Y')
+      appx_clear_time = Time.zone.today.strftime('%m/%d/%Y')
 
       assert_selector '#cache-clearing-run' do
         assert_selector 'p', text: /#{appx_clear_time}/

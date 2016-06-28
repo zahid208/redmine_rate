@@ -4,7 +4,7 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
   def setup
     @user = User.generate!
     @project = Project.generate!
-    @date = Date.today.to_s
+    @date = Time.zone.today.to_s
     @time_entry = TimeEntry.new(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
     @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
   end

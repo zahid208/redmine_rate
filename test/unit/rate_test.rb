@@ -83,11 +83,19 @@ class RateTest < ActiveSupport::TestCase
     should 'recalculate all of the cached cost of all Time Entries for the user' do
       @user = User.generate!
       @project = Project.generate!
-      @date = Date.today.to_s
+      @date = Time.zone.today.to_s
       @past_date = 1.month.ago.strftime('%Y-%m-%d')
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
-      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
-      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @past_date, hours: 20.0, activity: TimeEntryActivity.generate!)
+      @time_entry1 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @date,
+                                         hours: 10.0,
+                                         activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @past_date,
+                                         hours: 20.0,
+                                         activity: TimeEntryActivity.generate!)
 
       assert_equal 2000.00, @time_entry1.cost
       assert_equal 0, @time_entry2.cost
@@ -103,13 +111,21 @@ class RateTest < ActiveSupport::TestCase
     should 'recalculate all of the cached cost of all Time Entries for the user' do
       @user = User.generate!
       @project = Project.generate!
-      @date = Date.today.to_s
+      @date = Time.zone.today.to_s
       @past_date = 1.month.ago.strftime('%Y-%m-%d')
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
       @old_rate = Rate.generate!(user: @user, project: @project, date_in_effect: 2.months.ago.strftime('%Y-%m-%d'), amount: 10.0)
 
-      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
-      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @past_date, hours: 20.0, activity: TimeEntryActivity.generate!)
+      @time_entry1 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @date,
+                                         hours: 10.0,
+                                         activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @past_date,
+                                         hours: 20.0,
+                                         activity: TimeEntryActivity.generate!)
 
       assert_equal 2000.00, @time_entry1.cost
       assert_equal 2000.00, @time_entry1.read_attribute(:cost)
@@ -128,7 +144,7 @@ class RateTest < ActiveSupport::TestCase
       @user = User.generate!
       @project = Project.generate!
       @date = '2009-01-01'
-      @date = Date.new(Date.today.year, 1, 1).to_s
+      @date = Date.new(Time.zone.today.year, 1, 1).to_s
       @default_rate = Rate.generate!(amount: 100.10, date_in_effect: @date, project: nil, user: @user)
       @rate = Rate.generate!(amount: 50.50, date_in_effect: @date, project: @project, user: @user)
     end
@@ -263,10 +279,18 @@ class RateTest < ActiveSupport::TestCase
     setup do
       @user = User.generate!
       @project = Project.generate!
-      @date = Date.today.to_s
+      @date = Time.zone.today.to_s
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
-      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
-      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 20.0, activity: TimeEntryActivity.generate!)
+      @time_entry1 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @date,
+                                         hours: 10.0,
+                                         activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @date,
+                                         hours: 20.0,
+                                         activity: TimeEntryActivity.generate!)
     end
 
     should 'update the caches of all Time Entries' do
@@ -289,13 +313,21 @@ class RateTest < ActiveSupport::TestCase
     setup do
       @user = User.generate!
       @project = Project.generate!
-      @date = Date.today.to_s
+      @date = Time.zone.today.to_s
 
       # Get rid of the fixtures we load in our test_helper since they have no cost
       TimeEntry.delete_all
 
-      @time_entry1 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 10.0, activity: TimeEntryActivity.generate!)
-      @time_entry2 = TimeEntry.generate!(user: @user, project: @project, spent_on: @date, hours: 20.0, activity: TimeEntryActivity.generate!)
+      @time_entry1 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @date,
+                                         hours: 10.0,
+                                         activity: TimeEntryActivity.generate!)
+      @time_entry2 = TimeEntry.generate!(user: @user,
+                                         project: @project,
+                                         spent_on: @date,
+                                         hours: 20.0,
+                                         activity: TimeEntryActivity.generate!)
       @rate = Rate.generate!(user: @user, project: @project, date_in_effect: @date, amount: 200.0)
     end
 
