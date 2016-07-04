@@ -52,4 +52,18 @@ module RateHelper
             href: url_for(url_options),
             class: css)
   end
+
+  def currency_codes_for_select
+    currencies = []
+    Money::Currency.table.values.each do |currency|
+      currencies << [currency[:name] + ' (' + currency[:iso_code] + ')', currency[:iso_code]]
+    end
+    currencies.sort
+  end
+
+  def currency_name(use_symbol = false)
+    iso_code = RedmineRate.settings[:currency].blank? ? 'eur' : RedmineRate.settings[:currency]
+    currency = Money::Currency.find(iso_code)
+    use_symbol ? currency.symbol : currency
+  end
 end

@@ -17,3 +17,10 @@ Rails.configuration.to_prepare do
   require 'redmine_rate/patches/time_entry_patch'
   require 'redmine_rate/patches/users_helper_patch'
 end
+
+# global Redmine Reporting constants and settings
+module RedmineRate
+  def self.settings
+    Setting[:plugin_redmine_rate].blank? ? {} : Setting[:plugin_redmine_rate]
+  end
+end

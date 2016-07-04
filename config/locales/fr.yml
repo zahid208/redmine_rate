@@ -3,7 +3,7 @@ fr:
   rate_label_rate: Tarif
   rate_label_rate_history: Historique du tarif
   rate_label_new_rate: Nouveau tarif
-  rate_label_currency: €
+  rate_label_currency: Currency
   rate_error_user_not_found: Utilisateur introuvable
   rate_label_set_rate: Parametrage du tarif
   rate_label_default: Tarif par défaut
@@ -17,4 +17,3 @@ fr:
   text_load_missing_caches: "Charger les caches manquants"
   text_clear_and_load_all_caches: "Recharger tous les caches"
   text_caches_loaded_successfully: "Caches chargés avec succés"
-

@@ -19,7 +19,7 @@
         %>
       </td>
       <td align="right">
-        <%= l(:rate_label_currency) %> <%= f.text_field "amount", size: 10  %>
+        <%= f.text_field "amount", size: 10  %> <%=  currency_name(true) %>
       </td>
       <td align="center">
         <%= f.hidden_field "user_id" %>

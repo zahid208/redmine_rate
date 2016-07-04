@@ -10,10 +10,11 @@ Redmine::Plugin.register :redmine_rate do
 
   requires_redmine version_or_higher: '3.3.0'
 
-  # These settings are set automatically when caching
-  settings(default: {
-             'last_caching_run' => nil
-           })
+  default_settings = {
+    last_caching_run: nil,
+    currency: 'EUR'
+  }
+  settings(default: default_settings, partial: 'settings/rate')
 
   permission :view_rate, {}
 

@@ -12,7 +12,7 @@ module RedmineRate
       #
       def view_projects_settings_members_table_header(context = {})
         return '' unless User.current.allowed_to?(:view_rate, context[:project]) || User.current.admin?
-        "<th>#{l(:rate_label_rate)} #{l(:rate_label_currency)}</td>"
+        "<th>#{l(:rate_label_rate)} #{currency_name}</td>"
       end
 
       # Renders an AJAX from to update the member's billing rate
@@ -70,7 +70,7 @@ module RedmineRate
           end
         else
           if User.current.admin?
-            content << content_tag(:strong, link_to(number_to_currency(rate.amount),
+            content << content_tag(:strong, link_to(number_to_currency(rate.amount, unit: currency_name(true)),
                                                     controller: 'users',
                                                     action: 'edit',
                                                     id: member.user,

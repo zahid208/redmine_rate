@@ -3,7 +3,7 @@ ru:
   rate_label_rate: Платеж
   rate_label_rate_history: История платежей
   rate_label_new_rate: Новый платежe
-  rate_label_currency: $
+  rate_label_currency: Currency
   rate_error_user_not_found: Пользователь не найден
   rate_label_set_rate: Установить платеж
   rate_label_default: Платеж по умолчанию

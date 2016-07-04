@@ -27,7 +27,7 @@
         <em><%= l(:rate_label_default) %></em>
         <% end %>
       </td>
-      <td align="right"><%= h rate.amount %></td>
+      <td align="right"><%= h rate.amount %> <%= currency_name(true) %></td>
       <td align="center">
         <% if rate.unlocked? %>
         <%= link_to image_tag('edit.png'), edit_rate_path(rate, back_url: @back_url) %>
