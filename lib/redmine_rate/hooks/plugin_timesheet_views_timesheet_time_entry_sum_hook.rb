@@ -7,7 +7,7 @@ module RedmineRate
         time_entries = context[:time_entries]
         costs = time_entries.collect { |time_entry| cost_item(time_entry) }.compact.sum
         if costs >= 0
-          return td_cell(number_to_currency(costs))
+          return td_cell(show_number_with_currency(costs))
         else
           return td_cell('&nbsp;')
         end

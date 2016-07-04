@@ -70,7 +70,7 @@ module RedmineRate
           end
         else
           if User.current.admin?
-            content << content_tag(:strong, link_to(number_to_currency(rate.amount, unit: currency_name(true)),
+            content << content_tag(:strong, link_to(show_number_with_currency(rate.amount),
                                                     controller: 'users',
                                                     action: 'edit',
                                                     id: member.user,

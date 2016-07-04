@@ -66,4 +66,8 @@ module RateHelper
     currency = Money::Currency.find(iso_code)
     use_symbol ? currency.symbol : currency
   end
+
+  def show_number_with_currency(num)
+    number_to_currency(num, unit: currency_name(true))
+  end
 end
