@@ -68,6 +68,8 @@ module RateHelper
   end
 
   def show_number_with_currency(num)
-    number_to_currency(num, unit: currency_name(true))
+    locale = User.current.language if User.current.language.present?
+    locale ||= Setting.default_language
+    number_to_currency(num, unit: currency_name(true), locale: locale )
   end
 end
