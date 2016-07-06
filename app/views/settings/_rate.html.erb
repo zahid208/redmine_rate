@@ -1,7 +1,9 @@
-<p>
-  <%= label_tag 'settings[currency]', l(:rate_label_currency) %>
-  <%= select_tag 'settings[currency]',
-      options_for_select(currency_codes_for_select, @settings['currency']) %>
-</p>
+<% extend RateHelper %>
+<% rate_tabs = [
+    { name: 'settings', partial: 'settings/rate_settings', label: :label_settings },
+    { name: 'caches', partial: 'settings/rate_caches', label: :label_rate_caches }
+  ] %>
 
-<% html_title(l(:label_settings), l(:label_password_plural)) -%>
+<%= render_tabs rate_tabs %>
+
+<% html_title(l(:label_settings), l(:label_rate_plural)) -%>

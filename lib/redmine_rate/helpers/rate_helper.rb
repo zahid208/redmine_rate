@@ -1,4 +1,22 @@
 module RateHelper
+  def rate_last_caching_run
+    if Setting.plugin_redmine_rate['last_caching_run'].present? &&
+       Setting.plugin_redmine_rate['last_caching_run'].to_date
+      format_time(Setting.plugin_redmine_rate['last_caching_run'])
+    else
+      l(:text_no_cache_run)
+    end
+  end
+
+  def rate_last_cache_clearing_run
+    if Setting.plugin_redmine_rate['last_cache_clearing_run'].present? &&
+       Setting.plugin_redmine_rate['last_cache_clearing_run'].to_date
+      format_time(Setting.plugin_redmine_rate['last_cache_clearing_run'])
+    else
+      l(:text_no_cache_run)
+    end
+  end
+
   # Allows more parameters than the standard sort_header_tag
   def rate_sort_header_tag(column, options = {})
     caption = options.delete(:caption) || titleize(ActiveSupport::Inflector::humanize(column))

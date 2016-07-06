@@ -17,6 +17,4 @@ Redmine::Plugin.register :redmine_rate do
   settings(default: default_settings, partial: 'settings/rate')
 
   permission :view_rate, {}
-
-  menu :admin_menu, :rate_caches, { controller: 'rate_caches', action: 'index' }, caption: :text_rate_caches_panel
 end

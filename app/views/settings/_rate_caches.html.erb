@@ -1,0 +1,17 @@
+<p>
+  <%= l(:text_last_caching_run) %><%= rate_last_caching_run %>
+</p>
+
+<p>
+  <%= link_to(l(:text_load_missing_caches), { controller: 'rate_caches', action: 'update', cache: 'missing' }) %>
+</p>
+
+<hr />
+
+<p>
+  <%= l(:text_last_cache_clearing_run) %><%= rate_last_cache_clearing_run %>
+</p>
+
+<p>
+  <%= link_to(l(:text_clear_and_load_all_caches), { controller: 'rate_caches', action: 'update', cache: 'reload' }) %>
+</p>

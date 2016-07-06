@@ -12,7 +12,7 @@ module RedmineRate
       #
       def view_projects_settings_members_table_header(context = {})
         return '' unless User.current.allowed_to?(:view_rate, context[:project]) || User.current.admin?
-        "<th>#{l(:rate_label_rate)} #{currency_name}</td>"
+        "<th>#{l(:label_rate)} #{currency_name}</td>"
       end
 
       # Renders an AJAX from to update the member's billing rate

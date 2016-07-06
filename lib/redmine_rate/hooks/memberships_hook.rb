@@ -2,7 +2,7 @@ module RedmineRate
   module Hooks
     class MembershipsHook < Redmine::Hook::ViewListener
       def view_users_memberships_table_header(_context = {})
-        content_tag(:th, l(:rate_label_rate) + ' ' + currency_name)
+        content_tag(:th, l(:label_rate) + ' ' + currency_name)
       end
 
       def view_users_memberships_table_row(context = {})

@@ -1,3 +1,4 @@
 resources :rates
-get 'rate_caches', to: 'rate_caches#index'
-put 'rate_caches', to: 'rate_caches#update'
+match 'rate_caches',
+      to: 'rate_caches#update',
+      via: [:get, :put]
