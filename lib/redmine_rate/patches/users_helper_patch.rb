@@ -14,12 +14,12 @@ module RedmineRate
             options = content_tag('option', "--- #{l(:rate_label_default)} ---", value: '')
             projects_by_root = projects.group_by(&:root)
             projects_by_root.keys.sort.each do |root|
-              root_selected = (root == selected) ? 'selected' : nil
+              root_selected = root == selected ? 'selected' : nil
 
               options << content_tag('option', h(root.name), value: root.id, disabled: !projects.include?(root), selected: root_selected)
               projects_by_root[root].sort.each do |project|
                 next if project == root
-                child_selected = (project == selected) ? 'selected' : nil
+                child_selected = project == selected ? 'selected' : nil
 
                 project_name = "&#187; #{h project.name}".html_safe
                 options << content_tag('option', project_name, value: project.id, selected: child_selected)

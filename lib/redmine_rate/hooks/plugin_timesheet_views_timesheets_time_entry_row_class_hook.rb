@@ -11,9 +11,9 @@ module RedmineRate
         return '' unless cost # Permissions
 
         if cost && cost <= 0
-          return 'missing-rate'
+          'missing-rate'
         else
-          return ''
+          ''
         end
       end
     end
