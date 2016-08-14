@@ -3,7 +3,7 @@ de:
   label_rate_plural: Stundensätze
   label_rate: Stundensatz
   permission_view_rate: Stundensatz anzeigen
-  rate_cost: Kosten
+  label_rate_cost: Kosten
   rate_created_message: Der Stundensatz wurde erfolgreich angelegt.
   rate_error_creating_new_rate: Ein Fehler ist bei der Zuweisung des Stundensatzes aufgetreten.
   rate_error_user_not_found: Benutzer nicht gefunden

@@ -3,15 +3,15 @@ fr:
   label_rate_plural: Tarifs
   label_rate: Tarif
   permission_view_rate: Show rate
-  rate_cost: Coût
-  rate_error_user_not_found: Utilisateur introuvable
-  rate_error_user_not_found: Utilisateur non trouvé
+  label_rate_cost: "Coût"
+  rate_error_user_not_found: "Utilisateur introuvable"
+  rate_error_user_not_found: "Utilisateur non trouvé"
   rate_label_currency: Currency
-  rate_label_default: Tarif par défaut
-  rate_label_new_rate: Nouveau tarif
+  rate_label_default: "Tarif par défaut"
+  rate_label_new_rate: "Nouveau tarif"
   rate_label_rate_history: Historique du tarif
-  rate_label_set_rate: Définir le tarif
-  rate_label_set_rate: Parametrage du tarif
+  rate_label_set_rate: "Définir le tarif"
+  rate_label_set_rate: "Parametrage du tarif"
   text_caches_loaded_successfully: "Caches chargés avec succés"
   text_clear_and_load_all_caches: "Recharger tous les caches"
   text_last_cache_clearing_run: "Dernier cache purgé à : "

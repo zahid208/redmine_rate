@@ -2,6 +2,8 @@ ru:
   label_rate_caches: "Rate Caches"
   label_rate_plural: Платежи
   label_rate: Платеж
+  permission_view_rate: Show rate
+  label_rate_cost: Cost
   rate_error_user_not_found: Пользователь не найден
   rate_label_currency: Currency
   rate_label_default: Платеж по умолчанию

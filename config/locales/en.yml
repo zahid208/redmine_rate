@@ -3,7 +3,7 @@ en:
   label_rate_plural: Rates
   label_rate: Rate
   permission_view_rate: Show rate
-  rate_cost: Cost
+  label_rate_cost: Cost
   rate_created_message: Rate was successfully created.
   rate_error_creating_new_rate: Error creating a new Rate.
   rate_error_user_not_found: User not found
