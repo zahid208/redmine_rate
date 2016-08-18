@@ -305,7 +305,7 @@ class RateTest < ActiveSupport::TestCase
       Rate.update_all_time_entries_with_missing_cost
 
       assert Setting.plugin_redmine_rate['last_caching_run'], 'Last run not timestamped'
-      assert Time.parse(Setting.plugin_redmine_rate['last_caching_run']), 'Last run timestamp not parseable'
+      assert Time.zone.parse(Setting.plugin_redmine_rate['last_caching_run']), 'Last run timestamp not parseable'
     end
   end
 
@@ -343,7 +343,7 @@ class RateTest < ActiveSupport::TestCase
       Rate.update_all_time_entries_to_refresh_cache
 
       assert Setting.plugin_redmine_rate['last_cache_clearing_run'], 'Last run not timestamped'
-      assert Time.parse(Setting.plugin_redmine_rate['last_cache_clearing_run']), 'Last run timestamp not parseable'
+      assert Time.zone.parse(Setting.plugin_redmine_rate['last_cache_clearing_run']), 'Last run timestamp not parseable'
     end
   end
 end

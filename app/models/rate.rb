@@ -8,9 +8,9 @@ class Rate < ActiveRecord::Base
   belongs_to :user
   has_many :time_entries
 
-  validates_presence_of :user_id
-  validates_presence_of :date_in_effect
-  validates_numericality_of :amount
+  validates :user_id, presence: true
+  validates :date_in_effect, presence: true
+  validates :amount, numericality: true
 
   before_save :unlocked?
   after_save :update_time_entry_cost_cache
@@ -85,15 +85,13 @@ class Rate < ActiveRecord::Base
     store_cache_timestamp('last_cache_clearing_run', Time.now.utc.to_s)
   end
 
-  private
-
   def self.for_user_project_and_date(user, project, date)
     if project.nil?
-      return Rate.where("user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL", user.id, date)
-                 .order("date_in_effect DESC")
+      return Rate.where('user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL', user.id, date)
+                 .order('date_in_effect DESC')
                  .first
     else
-      return Rate.where("user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?", user.id, project.id, date)
+      return Rate.where('user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?', user.id, project.id, date)
                  .order('date_in_effect DESC')
                  .first
     end
@@ -106,17 +104,17 @@ class Rate < ActiveRecord::Base
   # Checks a date string to make sure it is in format of +YYYY-MM-DD+, throwing
   # a Rate::InvalidParameterException otherwise
   def self.check_date_string(date)
-    raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)") unless date.is_a?(String)
+    raise Rate::InvalidParameterException.new('date must be a valid Date string (e.g. YYYY-MM-DD)') unless date.is_a?(String)
 
     begin
       Date.parse(date)
     rescue ArgumentError
-      raise Rate::InvalidParameterException.new("date must be a valid Date string (e.g. YYYY-MM-DD)")
+      raise Rate::InvalidParameterException.new('date must be a valid Date string (e.g. YYYY-MM-DD)')
     end
   end
 
   def self.store_cache_timestamp(cache_name, timestamp)
-    Setting.plugin_redmine_rate = Setting.plugin_redmine_rate.merge({cache_name => timestamp})
+    Setting.plugin_redmine_rate = Setting.plugin_redmine_rate.merge(cache_name => timestamp)
   end
 
   def self.with_common_lockfile(force = false, &block)

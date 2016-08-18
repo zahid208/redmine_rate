@@ -1,7 +1,7 @@
 class RateCachesController < ApplicationController
   layout 'admin'
 
-  before_filter :require_admin
+  before_action :require_admin
 
   def update
     if params[:cache].present?

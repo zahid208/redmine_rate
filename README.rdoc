@@ -2,6 +2,8 @@
 
 The Rate plugin stores billable rates for Users.  It also provides an API that can be used to find the rate for a Member of a Project at a specific date.
 
+[![Dependency Status](https://gemnasium.com/badges/github.com/AlphaNodes/redmine_rate.svg)](https://gemnasium.com/github.com/AlphaNodes/redmine_rate)
+
 == Features
 
 * Track rates for a user based on
@@ -13,10 +15,6 @@ The Rate plugin stores billable rates for Users.  It also provides an API that c
 * Integration with the Billing plugin
 * Integration with the Budget plugin
 * Integration with the Contracts plugin
-
-== Getting the plugin
-
-A copy of the plugin can be downloaded from {Little Stream Software}[https://projects.littlestreamsoftware.com/projects/redmine-rate/files] or from {GitHub}[http://github.com/edavis10/redmine_rate/tree/master]
 
 
 == Installation and Setup
@@ -86,8 +84,3 @@ The plugin includes some simple caching for time entries cost. Instead of doing 
 == License
 
 This plugin is licensed under the GNU GPL v2.  See COPYRIGHT.txt and GPL.txt for details.
-
-== Project help
-
-If you need help you can contact the maintainer on the Bug Tracker.  The bug tracker is located at  https://projects.littlestreamsoftware.com
-

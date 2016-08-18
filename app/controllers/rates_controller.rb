@@ -3,9 +3,9 @@ class RatesController < ApplicationController
   helper :sort
   include SortHelper
 
-  before_filter :require_admin
-  before_filter :require_user_id, only: [:index, :new]
-  before_filter :set_back_url
+  before_action :require_admin
+  before_action :require_user_id, only: [:index, :new]
+  before_action :set_back_url
 
   VALID_SORT_OPTIONS = {
     'date_in_effect' => "#{Rate.table_name}.date_in_effect",
