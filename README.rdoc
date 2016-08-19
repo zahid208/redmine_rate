@@ -3,8 +3,7 @@
 The Rate plugin stores billable rates for Users.  It also provides an API that can be used to find the rate for a Member of a Project at a specific date.
 
 {<img src="https://gemnasium.com/badges/github.com/AlphaNodes/redmine_rate.svg" alt="Dependency Status" />}[https://gemnasium.com/github.com/AlphaNodes/redmine_rate]
-
-[[https://pm.alphanodes.com/jenkins/buildStatus/icon?job=Devel-build-redmine-rate|alt=enkins Build Status]]
+![Jenkins Build Status](https://pm.alphanodes.com/jenkins/buildStatus/icon?job=Devel-build-redmine-rate)
 
 == Requirements
 
