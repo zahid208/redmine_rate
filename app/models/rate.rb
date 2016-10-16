@@ -87,13 +87,13 @@ class Rate < ActiveRecord::Base
 
   def self.for_user_project_and_date(user, project, date)
     if project.nil?
-      return Rate.where('user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL', user.id, date)
-                 .order('date_in_effect DESC')
-                 .first
+      Rate.where('user_id IN (?) AND date_in_effect <= ? AND project_id IS NULL', user.id, date)
+          .order('date_in_effect DESC')
+          .first
     else
-      return Rate.where('user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?', user.id, project.id, date)
-                 .order('date_in_effect DESC')
-                 .first
+      Rate.where('user_id IN (?) AND project_id IN (?) AND date_in_effect <= ?', user.id, project.id, date)
+          .order('date_in_effect DESC')
+          .first
     end
   end
 
@@ -119,7 +119,7 @@ class Rate < ActiveRecord::Base
 
   def self.with_common_lockfile(force = false, &block)
     # Wait 1 second after stealing a forced lock
-    options = {retries: 0, suspend: 1}
+    options = { retries: 0, suspend: 1 }
     options[:max_age] = 1 if force
 
     Lockfile(lock_file, options) do
