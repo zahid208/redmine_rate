@@ -130,17 +130,15 @@ namespace :rate_plugin do
 
       File.open(RateConversion::VendorInvoiceDataFile) do |file|
         YAML.load_documents(file) do |invoice_export|
-          invoice = VendorInvoice.find_by_id(invoice_export[:id])
+          invoice = VendorInvoice.find_by(id: invoice_export[:id])
 
           if invoice.nil?
             puts "ERROR: No VendorInvoice found with the ID of #{invoice_export[:id]}"
             counter += 1
+          elsif invoice.type.to_s == 'FixedVendorInvoice'
+            counter += 1 unless RateConversion.compare_values(invoice_export[:amount], invoice.amount, "VendorInvoice #{invoice.id}'s amount is off")
           else
-            if invoice.type.to_s == 'FixedVendorInvoice'
-              counter += 1 unless RateConversion.compare_values(invoice_export[:amount], invoice.amount, "VendorInvoice #{invoice.id}'s amount is off")
-            else
-              counter += 1 unless RateConversion.compare_values(invoice_export[:amount], invoice.amount_for_user, "VendorInvoice #{invoice.id}'s amount is off")
-            end
+            counter += 1 unless RateConversion.compare_values(invoice_export[:amount], invoice.amount_for_user, "VendorInvoice #{invoice.id}'s amount is off")
           end
         end
       end
