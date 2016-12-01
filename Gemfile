@@ -1,3 +1,6 @@
-gem 'money'
 gem 'lockfile', '~> 2.1.3'
-gem 'shoulda', group: :test
+gem 'money'
+
+group :test do
+  gem 'shoulda'
+end

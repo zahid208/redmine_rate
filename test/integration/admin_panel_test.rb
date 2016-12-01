@@ -18,18 +18,8 @@ class AdminPanelTest < RedmineRateIntegrationTest
   end
 
   context 'Rate Caches admin panel' do
-    should 'be listed in the main Admin section' do
-      click_link 'Administration'
-      assert_equal 200, status_code
-
-      assert_selector '#admin-menu' do
-        assert_selector 'a.rate-caches'
-      end
-    end
-
     should 'show the last run timestamp for the last caching run' do
-      click_link 'Administration'
-      click_link 'Rate Caches'
+      visit('/settings/plugin/redmine_rate?tab=caches')
 
       assert_selector '#caching-run' do
         assert_selector 'p', text: /#{format_time(@last_caching_run)}/
@@ -37,8 +27,7 @@ class AdminPanelTest < RedmineRateIntegrationTest
     end
 
     should 'show the last run timestamp for the last cache clearing run' do
-      click_link 'Administration'
-      click_link 'Rate Caches'
+      visit('/settings/plugin/redmine_rate?tab=caches')
 
       assert_selector '#cache-clearing-run' do
         assert_selector 'p', text: /#{format_time(@last_cache_clearing_run)}/
@@ -46,10 +35,7 @@ class AdminPanelTest < RedmineRateIntegrationTest
     end
 
     should 'have a button to force a caching run' do
-      click_link 'Administration'
-      click_link 'Rate Caches'
-      click_button 'Load Missing Caches'
-
+      visit('/rate_caches?cache=missing')
       assert_equal 200, status_code
 
       appx_clear_time = Time.zone.today.strftime('%m/%d/%Y')
@@ -60,10 +46,7 @@ class AdminPanelTest < RedmineRateIntegrationTest
     end
 
     should 'have a button to force a cache clearing run' do
-      click_link 'Administration'
-      click_link 'Rate Caches'
-      click_button 'Clear and Load All Caches'
-
+      visit('/rate_caches?cache=reload')
       assert_equal 200, status_code
 
       appx_clear_time = Time.zone.today.strftime('%m/%d/%Y')

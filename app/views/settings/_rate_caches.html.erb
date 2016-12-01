@@ -2,13 +2,13 @@
   <%= l(:text_last_caching_run) %><%= rate_last_caching_run %>
 </p>
 
-<p>
+<p id="cache-clearing-run">
   <%= link_to(l(:text_load_missing_caches), { controller: 'rate_caches', action: 'update', cache: 'missing' }) %>
 </p>
 
 <hr />
 
-<p>
+<p id="caching-run">
   <%= l(:text_last_cache_clearing_run) %><%= rate_last_cache_clearing_run %>
 </p>
 
