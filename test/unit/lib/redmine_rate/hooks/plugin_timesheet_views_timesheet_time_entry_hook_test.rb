@@ -30,7 +30,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntryTest < ActionCon
 
         @response.body = hook(time_entry: time_entry)
 
-        assert_select 'td', text: '$200.00'
+        assert_select 'td', text: '€200.00'
       end
     end
 

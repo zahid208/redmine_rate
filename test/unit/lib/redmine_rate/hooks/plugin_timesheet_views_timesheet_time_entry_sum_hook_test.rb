@@ -31,7 +31,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < Action
 
         @response.body = hook(time_entries: [time_entry1, time_entry2])
 
-        assert_select 'td', text: '$1,200.00'
+        assert_select 'td', text: '€1,200.00'
       end
     end
 
@@ -43,7 +43,7 @@ class RedmineRate::Hooks::PluginTimesheetViewsTimesheetTimeEntrySumTest < Action
 
         @response.body = hook(time_entries: [time_entry])
 
-        assert_select 'td', text: '$0.00'
+        assert_select 'td', text: '€0.00'
       end
     end
   end

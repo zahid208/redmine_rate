@@ -61,10 +61,8 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
 
   context 'before save' do
     should 'clear and recalculate the cache' do
-      assert_equal nil, @time_entry.read_attribute(:cost)
-
+      assert_nil @time_entry.read_attribute(:cost)
       assert @time_entry.save
-
       assert_equal 2000.0, @time_entry.read_attribute(:cost)
     end
 

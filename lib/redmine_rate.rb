@@ -1,7 +1,8 @@
 
 Rails.configuration.to_prepare do
-  # Helper
-  require 'redmine_rate/helpers/rate_helper'
+  # Global helpers
+  require_dependency 'redmine_rate/helpers/rate_helper'
+
   # Hooks
   require 'redmine_rate/hooks/project_hook'
   require 'redmine_rate/hooks/memberships_hook'

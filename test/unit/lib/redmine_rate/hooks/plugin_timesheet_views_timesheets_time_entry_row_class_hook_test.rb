@@ -1,4 +1,4 @@
-require_relative '../../../../test_helpe'
+require_relative '../../../../test_helper'
 
 class RedmineRate::Hooks::PluginTimesheetViewsTimesheetsTimeEntryRowClassTest < ActionController::TestCase
   include Redmine::Hook::Helper

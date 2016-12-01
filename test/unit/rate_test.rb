@@ -185,8 +185,7 @@ class RateTest < ActiveSupport::TestCase
       should 'a nil when there is no rate' do
         assert @rate.destroy
         assert @default_rate.destroy
-
-        assert_equal nil, Rate.for(@user, @project, @date)
+        assert_nil Rate.for(@user, @project, @date)
       end
     end
 
@@ -208,8 +207,7 @@ class RateTest < ActiveSupport::TestCase
       should 'should return nil if no set or default rate is found' do
         assert @rate.destroy
         assert @default_rate.destroy
-
-        assert_equal nil, Rate.for(@user, @project, @date)
+        assert_nil Rate.for(@user, @project, @date)
       end
     end
 
@@ -225,8 +223,7 @@ class RateTest < ActiveSupport::TestCase
       should 'should return nil if no set or default rate is found' do
         assert @rate.destroy
         assert @default_rate.destroy
-
-        assert_equal nil, Rate.for(@user, @project)
+        assert_nil Rate.for(@user, @project)
       end
     end
 
@@ -242,8 +239,7 @@ class RateTest < ActiveSupport::TestCase
       should 'should return nil if no set or default rate is found' do
         assert @rate.destroy
         assert @default_rate.destroy
-
-        assert_equal nil, Rate.for(@user)
+        assert_nil Rate.for(@user)
       end
     end
 
@@ -300,7 +296,7 @@ class RateTest < ActiveSupport::TestCase
     end
 
     should 'timestamp a successful run' do
-      assert_equal nil, Setting.plugin_redmine_rate['last_caching_run']
+      assert_nil Setting.plugin_redmine_rate['last_caching_run']
 
       Rate.update_all_time_entries_with_missing_cost
 
@@ -338,7 +334,7 @@ class RateTest < ActiveSupport::TestCase
     end
 
     should 'timestamp a successful run' do
-      assert_equal nil, Setting.plugin_redmine_rate['last_cache_clearing_run']
+      assert_nil Setting.plugin_redmine_rate['last_cache_clearing_run']
 
       Rate.update_all_time_entries_to_refresh_cache
 
