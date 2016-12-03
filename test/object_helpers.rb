@@ -1,6 +1,6 @@
 module ObjectHelper
   def TimeEntryActivity.generate!(options = {})
-    activity = TimeEntryActivity.new
+    activity = TimeEntryActivity.new options
     activity.name = "Test Activity #{TimeEntryActivity.count + 1}"
     activity.save
     activity
