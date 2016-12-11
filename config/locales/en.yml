@@ -5,19 +5,19 @@ en:
   permission_view_rate: Show rate
   label_rate_cost: Cost
   rate_created_message: Rate was successfully created.
-  rate_error_creating_new_rate: Error creating a new Rate.
+  rate_error_creating_new_rate: Error creating a new rate.
   rate_error_user_not_found: User not found
   rate_label_currency: Currency
-  rate_label_default: Default Rate
+  rate_label_default: Default rate
   rate_label_edit_rate: Edit rate
-  rate_label_new_rate: New Rate
+  rate_label_new_rate: New rate
   rate_label_rate_history: Rate History
-  rate_label_set_rate: Set Rate
+  rate_label_set_rate: Set rate
   rate_locked_message:  Rate is locked and cannot be edited
   rate_updated_message: Rate was successfully updated.
   text_caches_loaded_successfully: "Caches loaded successfully"
-  text_clear_and_load_all_caches: "Clear and Load All Caches"
+  text_clear_and_load_all_caches: "Clear and load all caches"
   text_last_cache_clearing_run: "Last cache clearing run at: "
   text_last_caching_run: "Last caching run at: "
-  text_load_missing_caches: "Load Missing Caches"
+  text_load_missing_caches: "Load missing caches"
   text_no_cache_run: "no cache run found"
