@@ -1,12 +1,23 @@
 ru:
   label_rate_caches: "Rate Caches"
+  label_rate_cost: Cost
   label_rate_plural: Платежи
   label_rate: Платеж
   permission_view_rate: Show rate
-  label_rate_cost: Cost
+  rate_created_message: Rate was successfully created.
+  rate_error_creating_new_rate: Error creating a new rate.
   rate_error_user_not_found: Пользователь не найден
   rate_label_currency: Currency
   rate_label_default: Платеж по умолчанию
+  rate_label_edit_rate: Edit rate
   rate_label_new_rate: Новый платежe
   rate_label_rate_history: История платежей
   rate_label_set_rate: Установить платеж
+  rate_locked_message:  Rate is locked and cannot be edited
+  rate_updated_message: Rate was successfully updated.
+  text_caches_loaded_successfully: "Caches chargés avec succés"
+  text_clear_and_load_all_caches: "Recharger tous les caches"
+  text_last_cache_clearing_run: "Dernier cache purgé à : "
+  text_last_caching_run: "Dernier cache actif à : "
+  text_load_missing_caches: "Charger les caches manquants"
+  text_no_cache_run: "pas de cache actif trouvé"
