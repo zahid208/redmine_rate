@@ -69,7 +69,10 @@ Currently this feature is only available through the Rate API.  A Rate will beco
 
 === Caching
 
-The plugin includes some simple caching for time entries cost. Instead of doing a lookup for each time entry, the rate plugin will cache the total cost for each time entry to the database. The caching is done transparently but you can run and purge the caches from the Administration Panel or using the provided rate tasks (rake rate_plugin:update_cost_cache, rake rate_plugin:refresh_cost_cache).
+The plugin includes some simple caching for time entries cost.
+Instead of doing a lookup for each time entry, the rate plugin will cache the total cost for each time entry to the database.
+The caching is done transparently but you can run and purge the caches from the Administration Panel or
+using the provided rate tasks (rake rate_plugin:cache:update_cost_cache, rake rate_plugin:cache:refresh_cost_cache).
 
 == License
 

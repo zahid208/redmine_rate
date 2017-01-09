@@ -41,14 +41,12 @@ module RedmineRate
 
             if amount.nil?
               write_attribute(:cost, 0.0)
+            elsif store_to_db
+              # Write the cost to the database for caching
+              update_attribute(:cost, amount.to_f * hours.to_f)
             else
-              if store_to_db
-                # Write the cost to the database for caching
-                update_attribute(:cost, amount.to_f * hours.to_f)
-              else
-                # Cache to object only
-                write_attribute(:cost, amount.to_f * hours.to_f)
-              end
+              # Cache to object only
+              write_attribute(:cost, amount.to_f * hours.to_f)
             end
           end
 
