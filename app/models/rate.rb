@@ -61,28 +61,29 @@ class Rate < ActiveRecord::Base
 
   def self.update_all_time_entries_with_missing_cost(options = {})
     with_common_lockfile(options[:force]) do
-      TimeEntry.where(cost: nil).find_each do |time_entry|
+      TimeEntry.where(cost: nil).each do |time_entry|
         begin
-          time_entry.save_cached_cost
+          time_entry.recalculate_cost!
         rescue Rate::InvalidParameterException => ex
           puts "Error saving #{time_entry.id}: #{ex.message}"
         end
       end
+      TimeEntry.where(cost: nil).find_each(&:recalculate_cost!)
     end
-    store_cache_timestamp('last_caching_run', Time.now.utc.to_s)
+    store_cache_timestamp(:last_caching_run, Time.now.utc.to_s)
   end
 
   def self.update_all_time_entries_to_refresh_cache(options = {})
     with_common_lockfile(options[:force]) do
       TimeEntry.find_each do |time_entry| # batch find
         begin
-          time_entry.save_cached_cost
+          time_entry.recalculate_cost!
         rescue Rate::InvalidParameterException => ex
           puts "Error saving #{time_entry.id}: #{ex.message}"
         end
       end
     end
-    store_cache_timestamp('last_cache_clearing_run', Time.now.utc.to_s)
+    store_cache_timestamp(:last_cache_clearing_run, Time.now.utc.to_s)
   end
 
   def self.for_user_project_and_date(user, project, date)

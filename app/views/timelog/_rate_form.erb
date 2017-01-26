@@ -1,0 +1,3 @@
+<% if User.current.allowed_to?(:activate_billable, @project) %>
+  <p><%= form.check_box :billable %></p>
+<% end %>

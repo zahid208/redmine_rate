@@ -2,12 +2,12 @@ require_relative '../test_helper'
 
 class AdminPanelTest < RedmineRateIntegrationTest
   def setup
-    @last_caching_run = 4.days.ago.to_s
-    @last_cache_clearing_run = 7.days.ago.to_s
+    @last_caching_run = 4.days.ago
+    @last_cache_clearing_run = 7.days.ago
 
     Setting.plugin_redmine_rate = {
-      'last_caching_run' => @last_caching_run,
-      'last_cache_clearing_run' => @last_cache_clearing_run
+      last_caching_run: @last_caching_run.to_s,
+      last_cache_clearing_run: @last_cache_clearing_run.to_s
     }
 
     login_as 'admin', 'admin'
@@ -39,7 +39,6 @@ class AdminPanelTest < RedmineRateIntegrationTest
       assert_equal 200, status_code
 
       appx_clear_time = Time.zone.today.strftime('%m/%d/%Y')
-
       assert_selector '#caching-run' do
         assert_selector 'p', text: /#{appx_clear_time}/
       end
@@ -50,7 +49,6 @@ class AdminPanelTest < RedmineRateIntegrationTest
       assert_equal 200, status_code
 
       appx_clear_time = Time.zone.today.strftime('%m/%d/%Y')
-
       assert_selector '#cache-clearing-run' do
         assert_selector 'p', text: /#{appx_clear_time}/
       end

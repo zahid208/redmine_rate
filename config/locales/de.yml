@@ -1,8 +1,14 @@
 de:
-  label_rate_caches: "Stundensatz-Cache"
+  billable_default_info: Wenn aktiv, werden alle Aufwandsbuchungen immer als "Berechenbar" aktiviert. Besitzt der Benutzer nicht die Berechtigung "Berechenbar" zu aktivieren, dann werden bei diesen Benutzer alle Aufwandsbuchungen als "Berechenbar" markiert.
+  field_billable: Fakturierbar
+  field_cost: Kosten
   label_rate_cost: Kosten
+  label_billable_default: Standard Fakturierbar
+  label_rate_caches: "Stundensatz-Cache"
   label_rate_plural: Stundensätze
   label_rate: Stundensatz
+  label_total_cost: Kosten mit Unteraufgaben
+  permission_activate_billable: Aktiviere Fakturierbar
   permission_view_rate: Stundensatz anzeigen
   rate_created_message: Der Stundensatz wurde erfolgreich angelegt.
   rate_error_creating_new_rate: Ein Fehler ist bei der Zuweisung des Stundensatzes aufgetreten.

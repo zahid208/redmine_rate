@@ -1,0 +1,3 @@
+<% if User.current.allowed_to?(:view_rate, @project) || User.current.admin? %>
+<th><%= l(:label_rate) %> <%= currency_name %></th>
+<% end%>

@@ -9,63 +9,76 @@ module RedmineRate
         base.class_eval do
           belongs_to :rate
           before_save :recalculate_cost
+          before_save :set_billable
+          after_initialize :initialize_billable
+
+          safe_attributes 'billable'
         end
       end
 
       module ClassMethods
         # Updated the cached cost of all TimeEntries for user and project
         def update_cost_cache(user, project = nil)
-          c = {}
-          c[:user_id] = user
+          c = { user_id: user }
           c[:project_id] = project unless project.nil?
-
-          TimeEntry.where(c).each do |time_entry|
-            time_entry.save_cached_cost
-          end
+          TimeEntry.where(c).each(&:recalculate_cost!)
         end
       end
 
       module InstanceMethods
-        # Returns the current cost of the TimeEntry based on it's rate and hours
-        #
-        # Is a read-through cache method
-        def cost(options = {})
-          store_to_db = options[:store] || false
-
-          unless read_attribute(:cost)
-            amount = if rate.nil?
-                       Rate.amount_for(user, project, spent_on.to_s)
-                     else
-                       rate.amount
-                     end
-
-            if amount.nil?
-              write_attribute(:cost, 0.0)
-            elsif store_to_db
-              # Write the cost to the database for caching
-              update_attribute(:cost, amount.to_f * hours.to_f)
-            else
-              # Cache to object only
-              write_attribute(:cost, amount.to_f * hours.to_f)
-            end
-          end
-
-          read_attribute(:cost)
+        def initialize_billable
+          return unless new_record?
+          self.billable = if Setting.plugin_redmine_rate[:billable_default].to_i == 1
+                            true
+                          else
+                            false
+                          end
         end
 
-        def clear_cost_cache
-          write_attribute(:cost, nil)
+        def set_billable
+          return true if User.current.allowed_to?(:activate_billable, project)
+          self.billable = if Setting.plugin_redmine_rate[:billable_default].to_i == 1
+                            true
+                          else
+                            false
+                          end
+          true
         end
 
-        def save_cached_cost
-          clear_cost_cache
+        # Returns the current cost of the TimeEntry based on it's
+        # billable rate and hours.
+        def cost
+          cost = read_attribute(:cost)
+          return cost if cost
+          write_attribute(:cost, calculate_cost)
+        end
+
+        # Updates the cost attribute with the recalculated cost value.
+        def recalculate_cost!
+          cost = calculate_cost
           update_attribute(:cost, cost)
+          cost
         end
 
+        # Writes the cost attribute to the model instance with the
+        # recalculated cost value.
         def recalculate_cost
-          clear_cost_cache
-          cost(store: false)
-          true # for callback
+          write_attribute(:cost, calculate_cost)
+        end
+
+        private
+
+        # Returns the cost for this time entry depending on rates set
+        # and whether this time entry is billable or not.
+        def calculate_cost
+          return 0.0 unless billable
+          amount = if rate.nil?
+                     Rate.amount_for(user, project, spent_on.to_s)
+                   else
+                     rate.amount
+                   end
+          return 0.0 unless amount
+          amount.to_f * hours.to_f
         end
       end
     end

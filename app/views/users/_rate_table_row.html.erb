@@ -1,0 +1,47 @@
+<% if User.current.allowed_to?(:view_rate, project) || User.current.admin? %>
+<% if member.principal.is_a? Group # Groups cannot have a rate %>
+<td></td>
+<% else %>
+
+<% rate = Rate.for(member.principal, project) %>
+<td align='left' id="rate_<%= project.id %>_<%= member.user.id %>">
+<% if rate.nil? || rate.default? %>
+  <% if rate && rate.default? %>
+      <em><%= number_to_currency(rate.amount) %></em>
+  <% end %>
+
+  <% if User.current.admin? %>
+    <%= form_for(:rate,
+                 remote: true,
+                 url: { controller: 'rates', action: 'create' },
+                 method: :post) do |f| %>
+
+    <%= f.text_field(:amount) %>
+    <%= f.hidden_field(:date_in_effect, value: Time.zone.today.to_s) %>
+    <%= f.hidden_field(:project_id, value: project.id) %>
+    <%= f.hidden_field(:user_id, value: member.user.id) %>
+    <%= hidden_field_tag('back_url', url_for(controller: 'projects',
+                                             action: 'settings',
+                                             id: project,
+                                             tab: 'members',
+                                             protocol: Setting.protocol,
+                                             host: Setting.host_name)) %>
+    <%= submit_tag(l(:rate_label_set_rate), class: 'small') %>
+    <% end %>
+  <% end %>
+<% else %>
+  <strong><% if User.current.admin? %>
+    <%= link_to(show_number_with_currency(rate.amount), controller: 'users',
+                                                                action: 'edit',
+                                                                id: member.user,
+                                                                tab: 'rates',
+                                                                protocol: Setting.protocol,
+                                                                host: Setting.host_name) %>
+          <% else %>
+          <%= number_to_currency(rate.amount) %>
+          <% end %>
+   </strong>
+  <% end %>
+</td>
+<% end %>
+<% end %>

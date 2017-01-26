@@ -1,0 +1,12 @@
+<p>
+  <%= label_tag 'settings[currency]', l(:rate_label_currency) %>
+  <%= select_tag 'settings[currency]',
+      options_for_select(currency_codes_for_select, @settings[:currency]) %>
+</p>
+
+<p>
+  <%= label_tag 'settings[billable_default]', l(:label_billable_default) %>
+  <%= hidden_field_tag 'settings[billable_default]', 0, id: nil %>
+  <%= check_box_tag 'settings[billable_default]', 1, @settings[:billable_default].to_i  == 1 %>
+  <em class="info"><%= l(:billable_default_info) %></em>
+</p>

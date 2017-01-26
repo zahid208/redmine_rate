@@ -1,3 +1,4 @@
+gem 'deface'
 gem 'lockfile', '~> 2.1.3'
 gem 'money'
 

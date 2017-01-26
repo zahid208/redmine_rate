@@ -6,15 +6,20 @@ Redmine::Plugin.register :redmine_rate do
   url 'https://github.com/alphanodes/redmine_rate'
   description 'The Rate plugin provides an API that can be used to find the rate for a Member of a Project at a specific date.
                It also stores historical rate data so calculations will remain correct in the future.'
-  version '0.2.2'
+  version '0.9.9'
 
   requires_redmine version_or_higher: '3.3.0'
 
   default_settings = {
     last_caching_run: nil,
+    billable_default: 1,
     currency: 'EUR'
   }
-  settings(default: default_settings, partial: 'settings/rate')
 
-  permission :view_rate, {}
+  project_module :time_tracking do
+    permission :activate_billable, {}
+    permission :view_rate, {}
+  end
+
+  settings(default: default_settings, partial: 'settings/rate/rate')
 end

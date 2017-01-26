@@ -1,9 +1,0 @@
-<% extend RateHelper %>
-<% rate_tabs = [
-    { name: 'settings', partial: 'settings/rate_settings', label: :label_settings },
-    { name: 'caches', partial: 'settings/rate_caches', label: :label_rate_caches }
-  ] %>
-
-<%= render_tabs rate_tabs %>
-
-<% html_title(l(:label_settings), l(:label_rate_plural)) -%>
