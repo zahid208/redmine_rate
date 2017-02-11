@@ -91,7 +91,7 @@ class RatesControllerTest < ActionController::TestCase
 
       should 'should display an error flash message' do
         get :index
-        assert_match /not found/, flash[:error]
+        assert_match(/not found/, flash[:error])
       end
 
       context 'with mime type of xml' do
@@ -158,7 +158,7 @@ class RatesControllerTest < ActionController::TestCase
 
       should 'should display an error flash message' do
         get :new
-        assert_match /not found/, flash[:error]
+        assert_match(/not found/, flash[:error])
       end
 
       context 'with mime type of xml' do
@@ -330,7 +330,7 @@ class RatesControllerTest < ActionController::TestCase
         should 'should render an error message' do
           put :update, id: @mock_rate.id, rate: { amount: 0 }
 
-          assert_match /locked/, flash[:error]
+          assert_match(/locked/, flash[:error])
         end
       end
     end
@@ -365,7 +365,7 @@ class RatesControllerTest < ActionController::TestCase
 
         should 'should display an error message' do
           delete :destroy, id: @mock_rate.id
-          assert_match /locked/, flash[:error]
+          assert_match(/locked/, flash[:error])
         end
       end
     end
