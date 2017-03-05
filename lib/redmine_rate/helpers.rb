@@ -89,7 +89,7 @@ module RedmineRate
     def show_number_with_currency(num)
       locale = User.current.language if User.current.language.present?
       locale ||= Setting.default_language
-      number_to_currency(num, unit: currency_name(true), locale: locale)
+      number_to_currency(num, unit: currency_name(true), locale: locale, precision: 2)
     end
   end
 end
