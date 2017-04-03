@@ -4,7 +4,7 @@ class RatesController < ApplicationController
   include SortHelper
 
   before_action :require_admin
-  before_action :require_user_id, only: [:index, :new]
+  before_action :require_user_id, only: %i[index new]
   before_action :set_back_url
 
   VALID_SORT_OPTIONS = {
@@ -147,7 +147,7 @@ class RatesController < ApplicationController
     whitelist = %r{(rates|/users/edit)}
 
     back_url = CGI.unescape(params[:back_url].to_s)
-    unless back_url.blank?
+    if back_url.present?
       begin
         uri = URI.parse(back_url)
         if uri.path && uri.path.match(whitelist)

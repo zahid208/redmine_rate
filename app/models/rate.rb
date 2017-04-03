@@ -17,7 +17,7 @@ class Rate < ActiveRecord::Base
   before_destroy :unlocked?
   after_destroy :update_time_entry_cost_cache
 
-  scope :history_for_user, lambda { |user, order| where(user_id: user.id).order(order).includes(:project) }
+  scope :history_for_user, (->(user, order) { where(user_id: user.id).order(order).includes(:project) })
 
   def locked?
     !time_entries.empty?
