@@ -1,8 +1,3 @@
-require_relative '../../../test/test_helper'
-require_relative '../../../test/object_helpers'
-require_relative 'object_helpers'
-require 'capybara/rails'
-
 require 'simplecov'
 require 'simplecov-rcov'
 
@@ -12,8 +7,14 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 ]
 
 SimpleCov.start :rails do
+  add_filter 'init.rb'
   root File.expand_path(File.dirname(__FILE__) + '/..')
 end
+
+require_relative '../../../test/test_helper'
+require_relative '../../../test/object_helpers'
+require_relative 'object_helpers'
+require 'capybara/rails'
 
 ActiveSupport::TestCase.fixture_path = File.dirname(__FILE__) + '/../../../test/fixtures'
 
