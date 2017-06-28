@@ -3,6 +3,18 @@ require_relative '../../../test/object_helpers'
 require_relative 'object_helpers'
 require 'capybara/rails'
 
+require 'simplecov'
+require 'simplecov-rcov'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  SimpleCov::Formatter::RcovFormatter
+]
+
+SimpleCov.start :rails do
+  root File.expand_path(File.dirname(__FILE__) + '/..')
+end
+
 ActiveSupport::TestCase.fixture_path = File.dirname(__FILE__) + '/../../../test/fixtures'
 
 class ActiveSupport::TestCase
