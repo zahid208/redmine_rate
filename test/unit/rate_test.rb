@@ -296,12 +296,12 @@ class RateTest < ActiveSupport::TestCase
     end
 
     should 'timestamp a successful run' do
-      assert_nil Setting.plugin_redmine_rate[:last_caching_run]
+      assert_nil RedmineRate.settings[:last_caching_run]
 
       Rate.update_all_time_entries_with_missing_cost
 
-      assert Setting.plugin_redmine_rate[:last_caching_run], 'Last run not timestamped'
-      assert Time.zone.parse(Setting.plugin_redmine_rate[:last_caching_run]), 'Last run timestamp not parseable'
+      assert RedmineRate.settings[:last_caching_run], 'Last run not timestamped'
+      assert Time.zone.parse(RedmineRate.settings[:last_caching_run]), 'Last run timestamp not parseable'
     end
   end
 
@@ -336,12 +336,12 @@ class RateTest < ActiveSupport::TestCase
     end
 
     should 'timestamp a successful run' do
-      assert_nil Setting.plugin_redmine_rate[:last_cache_clearing_run]
+      assert_nil RedmineRate.settings[:last_cache_clearing_run]
 
       Rate.update_all_time_entries_to_refresh_cache
 
-      assert Setting.plugin_redmine_rate[:last_cache_clearing_run], 'Last run not timestamped'
-      assert Time.zone.parse(Setting.plugin_redmine_rate[:last_cache_clearing_run]), 'Last run timestamp not parseable'
+      assert RedmineRate.settings[:last_cache_clearing_run], 'Last run not timestamped'
+      assert Time.zone.parse(RedmineRate.settings[:last_cache_clearing_run]), 'Last run timestamp not parseable'
     end
   end
 end

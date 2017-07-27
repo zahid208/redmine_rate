@@ -5,10 +5,8 @@ class AdminPanelTest < RedmineRateIntegrationTest
     @last_caching_run = 4.days.ago
     @last_cache_clearing_run = 7.days.ago
 
-    Setting.plugin_redmine_rate = {
-      last_caching_run: @last_caching_run.to_s,
-      last_cache_clearing_run: @last_cache_clearing_run.to_s
-    }
+    Setting.plugin_redmine_rate[:last_caching_run] = @last_caching_run.to_s
+    Setting.plugin_redmine_rate[:last_cache_clearing_run] = @last_cache_clearing_run.to_s
 
     login_as 'admin', 'admin'
   end

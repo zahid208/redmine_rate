@@ -5,7 +5,7 @@ module RedmineRate
         base.send(:include, InstanceMethods)
         base.class_eval do
           alias_method_chain :available_columns, :rate
-          alias_method_chain :available_filters, :rate
+          alias_method_chain :initialize_available_filters, :rate
         end
       end
 
@@ -24,15 +24,16 @@ module RedmineRate
           @available_columns
         end
 
-        def available_filters_with_rate
-          return @available_filters if @available_filters
-          available_filters_without_rate
+        def initialize_available_filters_with_rate
+          initialize_available_filters_without_rate
 
-          @available_filters['cost'] = { name: l(:field_cost), type: :float }
-          @available_filters['billable'] = { name: l(:field_billable),
-                                             type: :list, values: [[l(:general_text_yes), '1'], [l(:general_text_no), '0']] }
+          add_available_filter('cost', name: l(:field_cost), type: :float) unless available_filters.key?('cost')
+          return if available_filters.key?('billable')
 
-          @available_filters
+          add_available_filter('billable',
+                               name: l(:field_billable),
+                               type: :list,
+                               values: [[l(:general_text_yes), '1'], [l(:general_text_no), '0']])
         end
 
         def total_for_cost(scope)

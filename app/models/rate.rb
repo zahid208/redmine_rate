@@ -1,7 +1,7 @@
 require 'lockfile'
 
 class Rate < ActiveRecord::Base
-  class InvalidParameterException < Exception; end
+  class InvalidParameterException < RuntimeError; end
   CACHING_LOCK_FILE_NAME = 'rate_cache'.freeze
 
   belongs_to :project
@@ -65,7 +65,7 @@ class Rate < ActiveRecord::Base
         begin
           time_entry.recalculate_cost!
         rescue Rate::InvalidParameterException => ex
-          puts "Error saving #{time_entry.id}: #{ex.message}"
+          Rails.logger.error "Error saving #{time_entry.id}: #{ex.message}"
         end
       end
       TimeEntry.where(cost: nil).find_each(&:recalculate_cost!)
@@ -79,7 +79,7 @@ class Rate < ActiveRecord::Base
         begin
           time_entry.recalculate_cost!
         rescue Rate::InvalidParameterException => ex
-          puts "Error saving #{time_entry.id}: #{ex.message}"
+          Rails.logger.error "Error saving #{time_entry.id}: #{ex.message}"
         end
       end
     end
@@ -115,7 +115,7 @@ class Rate < ActiveRecord::Base
   end
 
   def self.store_cache_timestamp(cache_name, timestamp)
-    Setting.plugin_redmine_rate = Setting.plugin_redmine_rate.merge(cache_name => timestamp)
+    Setting.plugin_redmine_rate = RedmineRate.settings.merge(cache_name => timestamp)
   end
 
   def self.with_common_lockfile(force = false, &block)

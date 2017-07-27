@@ -7,8 +7,8 @@ The Rate plugin stores billable rates for Users.  It also provides an API that c
 
 == Requirements
 
-* Redmine version >= 3.3.0
-* Ruby version >= 2.0.0
+* Redmine version >= 3.3.0 (Redmine 3.3.x and Redmine 3.4.x are supported)
+* Ruby version >= 2.1.5
 
 == Features
 
@@ -18,9 +18,7 @@ The Rate plugin stores billable rates for Users.  It also provides an API that c
 * Store historic rate amounts
 * Lock rates to preserve historic calculations
 * Rate.for API for other plugins
-* Integration with the Billing plugin
-* Integration with the Budget plugin
-* Integration with the Contracts plugin
+* Flag time entry as billable (with bulk support)
 
 
 == Installation

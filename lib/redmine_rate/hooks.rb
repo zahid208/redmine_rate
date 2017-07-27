@@ -6,6 +6,7 @@ module RedmineRate
     render_on(:view_projects_settings_members_table_header, partial: 'principal_memberships/rate_table_header')
     render_on(:view_users_memberships_table_row, partial: 'users/membership_rate')
     render_on(:view_projects_settings_members_table_row, partial: 'users/rate_table_row')
+    render_on(:view_time_entries_bulk_edit_details_bottom, partial: 'change_billable_bulk')
 
     def model_project_copy_before_save(context = {})
       source = context[:source_project]

@@ -1,3 +1,8 @@
+module RedmineRate
+  def self.settings
+    ActionController::Parameters.new(Setting[:plugin_redmine_rate])
+  end
+end
 
 Rails.configuration.to_prepare do
   # Patches
@@ -14,13 +19,6 @@ Rails.configuration.to_prepare do
 
   # Hooks
   require_dependency 'redmine_rate/hooks'
-end
-
-# global Redmine Rate constants and settings
-module RedmineRate
-  def self.settings
-    Setting[:plugin_redmine_rate].blank? ? {} : Setting[:plugin_redmine_rate]
-  end
 
   # include deface overwrites
   Rails.application.paths['app/overrides'] ||= []

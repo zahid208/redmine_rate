@@ -28,7 +28,7 @@ module RedmineRate
       module InstanceMethods
         def initialize_billable
           return unless new_record?
-          self.billable = if Setting.plugin_redmine_rate[:billable_default].to_i == 1
+          self.billable = if RedmineRate.settings[:billable_default].to_i == 1
                             true
                           else
                             false
@@ -37,7 +37,7 @@ module RedmineRate
 
         def set_billable
           return true if User.current.allowed_to?(:activate_billable, project)
-          self.billable = if Setting.plugin_redmine_rate[:billable_default].to_i == 1
+          self.billable = if RedmineRate.settings[:billable_default].to_i == 1
                             true
                           else
                             false
