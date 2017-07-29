@@ -23,16 +23,27 @@ The Rate plugin stores billable rates for Users.  It also provides an API that c
 
 == Installation
 
-To install the redmine_rate, execute the following commands from the root of your redmine directory, assuming that your RAILS_ENV environment variable is set to "production":
+To install the ``redmine_rate``, execute the following commands from the root of your redmine directory, assuming that your RAILS_ENV environment variable is set to "production":
 
  cd $REDMINE_ROOT
  git clone https://github.com/alphanodes/redmine_rate.git plugins/redmine_rate
  bundle install --without development test
- bundle rake redmine:plugins:migrate NAME=redmine_rate
+ bundle rake redmine:plugins:migrate NAME=redmine_rate RAILS_ENV=production
 
 Restart your application server (apache with passenger, nginx with passenger, unicorn, puma, etc.) and ``redmine_rate`` is ready to use.
 
 More information on installing Redmine plugins can be found here: https://www.redmine.org/wiki/redmine/Plugins
+
+
+## Uninstall
+
+Uninstall ``redmine_rate``.
+
+    cd $REDMINE_ROOT
+    bundle exec rake db:migrate_plugins NAME=redmine_rate VERSION=0 RAILS_ENV=production
+    rm -rf plugins/redmine_rate
+
+Restart Redmine (application server)
 
 == Usage
 
