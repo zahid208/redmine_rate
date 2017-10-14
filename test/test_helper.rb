@@ -1,14 +1,16 @@
-require 'simplecov'
-require 'simplecov-rcov'
+unless ENV['SKIP_COVERAGE']
+  require 'simplecov'
+  require 'simplecov-rcov'
 
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-  SimpleCov::Formatter::HTMLFormatter,
-  SimpleCov::Formatter::RcovFormatter
-]
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::RcovFormatter
+  ]
 
-SimpleCov.start :rails do
-  add_filter 'init.rb'
-  root File.expand_path(File.dirname(__FILE__) + '/..')
+  SimpleCov.start :rails do
+    add_filter 'init.rb'
+    root File.expand_path(File.dirname(__FILE__) + '/..')
+  end
 end
 
 require_relative '../../../test/test_helper'
