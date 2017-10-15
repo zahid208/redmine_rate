@@ -46,7 +46,7 @@ module RedmineRate
           order = 'asc'
         end
       end
-      caption = column.to_s.humanize unless caption
+      caption ||= column.to_s.humanize
 
       sort_options = { sort: @sort_criteria.add(column.to_s, order).to_param }
       # don't reuse params if filters are present

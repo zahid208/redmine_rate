@@ -36,7 +36,7 @@ class RatesControllerTest < ActionController::TestCase
     @mock_rate = Rate.generate!(stubs)
   end
 
-  def mock_locked_rate(stubs = {})
+  def mock_locked_rate
     @mock_rate = mock_rate
     @mock_rate.time_entries << TimeEntry.generate!
     @mock_rate
@@ -229,7 +229,10 @@ class RatesControllerTest < ActionController::TestCase
 
         should 'should redirect to the back_url if set' do
           back_url = '/rates'
-          post :create, rate: { project_id: @project.id, amount: '50', date_in_effect: Time.zone.today.to_s, user_id: @user.id }, back_url: back_url
+          post :create, rate: { project_id: @project.id,
+                                amount: '50',
+                                date_in_effect: Time.zone.today.to_s,
+                                user_id: @user.id }, back_url: back_url
 
           assert_redirected_to back_url
         end

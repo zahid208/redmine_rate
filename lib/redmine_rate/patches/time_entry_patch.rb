@@ -28,20 +28,12 @@ module RedmineRate
       module InstanceMethods
         def initialize_billable
           return unless new_record?
-          self.billable = if RedmineRate.settings[:billable_default].to_i == 1
-                            true
-                          else
-                            false
-                          end
+          self.billable = RedmineRate.settings[:billable_default].to_i == 1
         end
 
         def set_billable
           return true if User.current.allowed_to?(:activate_billable, project)
-          self.billable = if RedmineRate.settings[:billable_default].to_i == 1
-                            true
-                          else
-                            false
-                          end
+          self.billable = RedmineRate.settings[:billable_default].to_i == 1
           true
         end
 
