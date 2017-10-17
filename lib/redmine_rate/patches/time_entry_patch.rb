@@ -26,17 +26,6 @@ module RedmineRate
       end
 
       module InstanceMethods
-        def initialize_billable
-          return unless new_record?
-          self.billable = RedmineRate.settings[:billable_default].to_i == 1
-        end
-
-        def set_billable
-          return true if User.current.allowed_to?(:activate_billable, project)
-          self.billable = RedmineRate.settings[:billable_default].to_i == 1
-          true
-        end
-
         # Returns the current cost of the TimeEntry based on it's
         # billable rate and hours.
         def cost
@@ -59,6 +48,17 @@ module RedmineRate
         end
 
         private
+
+        def initialize_billable
+          return unless new_record?
+          self.billable = RedmineRate.setting?(:billable_default)
+        end
+
+        def set_billable
+          return true if User.current.allowed_to?(:activate_billable, project)
+          self.billable = RedmineRate.setting?(:billable_default)
+          true
+        end
 
         # Returns the cost for this time entry depending on rates set
         # and whether this time entry is billable or not.

@@ -35,10 +35,6 @@ class Rate < ActiveRecord::Base
     !default?
   end
 
-  def update_time_entry_cost_cache
-    TimeEntry.update_cost_cache(user, project)
-  end
-
   # API to find the Rate for a +user+ on a +project+ at a +date+
   def self.for(user, project = nil, date = Time.zone.today.to_s)
     # Check input since it's a "public" API
@@ -130,5 +126,11 @@ class Rate < ActiveRecord::Base
 
   def self.lock_file
     Rails.root + 'tmp' + Rate::CACHING_LOCK_FILE_NAME
+  end
+
+  private
+
+  def update_time_entry_cost_cache
+    TimeEntry.update_cost_cache(user, project)
   end
 end

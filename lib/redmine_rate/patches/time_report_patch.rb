@@ -6,18 +6,7 @@ module RedmineRate
       def self.included(base)
         base.send(:include, InstanceMethods)
         base.class_eval do
-          # alias_method_chain :load_available_criteria, :cost
-
-          def load_available_criteria2
-            return if @with_rate_criteria
-            @with_rate_criteria ||= true
-            @available_criteria['billable'] = {
-              sql: "#{TimeEntry.table_name}.billable",
-              format: 'bool',
-              label: :billable
-            }
-            @available_criteria
-          end
+          alias_method_chain :load_available_criteria, :cost
         end
       end
 
@@ -27,7 +16,7 @@ module RedmineRate
           @available_criteria['billable'] = {
             sql: "#{TimeEntry.table_name}.billable",
             format: 'bool',
-            label: :billable
+            label: :field_billable
           }
           @available_criteria
         end
