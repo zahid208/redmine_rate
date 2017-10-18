@@ -1,5 +1,5 @@
 class AddRateIdToTimeEntries < ActiveRecord::Migration
   def change
-    add_column :time_entries, :rate_id, :integer, index: true
+    add_reference :time_entries, :rate, index: true
   end
 end

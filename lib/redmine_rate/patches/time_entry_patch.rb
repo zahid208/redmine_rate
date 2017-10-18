@@ -8,9 +8,9 @@ module RedmineRate
         base.send(:include, InstanceMethods)
         base.class_eval do
           belongs_to :rate
-          before_save :recalculate_cost
-          before_save :set_billable
           after_initialize :initialize_billable
+          before_save :set_billable
+          before_save :recalculate_cost
 
           safe_attributes 'billable'
         end
@@ -21,7 +21,7 @@ module RedmineRate
         def update_cost_cache(user, project = nil)
           c = { user_id: user }
           c[:project_id] = project unless project.nil?
-          TimeEntry.where(c).each(&:recalculate_cost!)
+          where(c).each(&:recalculate_cost!)
         end
       end
 
@@ -31,20 +31,29 @@ module RedmineRate
         def cost
           cost = read_attribute(:cost)
           return cost if cost
-          write_attribute(:cost, calculate_cost)
+          ci = costinfo
+          write_attribute(:cost, ci[:cost])
+        end
+
+        def rate_id
+          rate_id = read_attribute(:rate_id)
+          return rate_id if rate_id
+          ci = costinfo
+          write_attribute(:rate_id, ci[:rate_id])
         end
 
         # Updates the cost attribute with the recalculated cost value.
         def recalculate_cost!
-          cost = calculate_cost
-          update_attribute(:cost, cost)
-          cost
+          ci = costinfo
+          update_columns(cost: ci[:cost], rate_id: ci[:rate_id])
         end
 
         # Writes the cost attribute to the model instance with the
         # recalculated cost value.
         def recalculate_cost
-          write_attribute(:cost, calculate_cost)
+          ci = costinfo
+          # do not add rate_id here, it is updated automatically!
+          write_attribute(:cost, ci[:cost])
         end
 
         private
@@ -62,15 +71,25 @@ module RedmineRate
 
         # Returns the cost for this time entry depending on rates set
         # and whether this time entry is billable or not.
-        def calculate_cost
-          return 0.0 unless billable
-          amount = if rate.nil?
-                     Rate.amount_for(user, project, spent_on.to_s)
-                   else
-                     rate.amount
-                   end
-          return 0.0 unless amount
-          amount.to_f * hours.to_f
+        def costinfo
+          return @costinfo unless @costinfo.nil?
+
+          info = { rate_id: nil, cost: 0.0 }
+          return info unless billable
+
+          if rate.nil?
+            r = Rate.for(user, project, spent_on.to_s)
+            return info unless r
+            rate_id = r.id
+            amount = r.amount
+          else
+            rate_id = rate.id
+            amount = rate.amount
+          end
+
+          return info if amount.blank?
+          @costinfo = { rate_id: rate_id, cost: amount.to_f * hours.to_f }
+          @costinfo
         end
       end
     end

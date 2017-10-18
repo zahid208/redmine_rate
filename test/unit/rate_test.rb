@@ -126,16 +126,19 @@ class RateTest < ActiveSupport::TestCase
                                          spent_on: @past_date,
                                          hours: 20.0,
                                          activity: TimeEntryActivity.generate!)
-
       assert_equal 2000.00, @time_entry1.cost
+      assert_equal @rate.id, @time_entry1.rate_id
       assert_equal 2000.00, @time_entry1.read_attribute(:cost)
       assert_equal 200.0, @time_entry2.cost
+      assert_equal @old_rate.id, @time_entry2.rate_id
       assert_equal 200.0, @time_entry2.read_attribute(:cost)
 
       @old_rate.destroy
 
-      assert_equal 2000.0, TimeEntry.find(@time_entry1.id).cost
-      assert_equal 0, TimeEntry.find(@time_entry2.id).cost
+      assert_equal 2000.0, TimeEntry.find(@time_entry1.id).cost.to_f
+      assert_equal @rate.id, TimeEntry.find(@time_entry1.id).rate_id
+      assert_equal 0, TimeEntry.find(@time_entry2.id).cost.to_f
+      assert_nil TimeEntry.find(@time_entry2.id).rate_id
     end
   end
 
