@@ -5,6 +5,7 @@ module RedmineRate
 
   def self.setting?(value)
     return true if settings[value].to_i == 1
+    false
   end
 end
 
