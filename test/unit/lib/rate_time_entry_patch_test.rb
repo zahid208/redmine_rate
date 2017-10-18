@@ -75,8 +75,8 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
       @time_entry.hours = 20
       assert @time_entry.save
 
-      assert_equal 4000.0, @time_entry.read_attribute(:cost)
-      assert_equal 4000.0, @time_entry.reload.cost
+      assert_equal 4000.0, @time_entry.read_attribute(:cost).to_f
+      assert_equal 4000.0, @time_entry.reload.cost.to_f
     end
   end
 end

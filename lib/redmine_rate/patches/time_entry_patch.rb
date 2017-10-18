@@ -72,8 +72,6 @@ module RedmineRate
         # Returns the cost for this time entry depending on rates set
         # and whether this time entry is billable or not.
         def costinfo
-          return @costinfo unless @costinfo.nil?
-
           info = { rate_id: nil, cost: 0.0 }
           return info unless billable
 
@@ -88,8 +86,7 @@ module RedmineRate
           end
 
           return info if amount.blank?
-          @costinfo = { rate_id: rate_id, cost: amount.to_f * hours.to_f }
-          @costinfo
+          { rate_id: rate_id, cost: amount.to_f * hours.to_f }
         end
       end
     end
