@@ -12,6 +12,7 @@ class RateTimeEntryPatchTest < ActiveSupport::TestCase
   should 'should return 0.0 if there are no rates for the user' do
     @rate.destroy
     assert_equal 0.0, @time_entry.cost
+    assert_nil @time_entry.rate_id
   end
 
   context 'should return the product of hours by' do
