@@ -1,7 +1,6 @@
 require_dependency 'time_entry'
 
 module RedmineRate
-  module Patches
     module IssuePatch
       def self.included(base)
         base.send(:include, InstanceMethods)
@@ -25,8 +24,8 @@ module RedmineRate
       end
     end
   end
-end
 
-unless Issue.included_modules.include?(RedmineRate::Patches::IssuePatch)
-  Issue.send(:include, RedmineRate::Patches::IssuePatch)
+
+unless Issue.included_modules.include?(RedmineRate::IssuePatch)
+  Issue.send(:include, RedmineRate::IssuePatch)
 end

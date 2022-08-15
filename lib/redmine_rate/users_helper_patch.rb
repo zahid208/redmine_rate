@@ -2,7 +2,6 @@ require_dependency 'users_helper'
 include RateHelper
 
 module RedmineRate
-  module Patches
     module UsersHelperPatch
       def self.included(base)
         base.send(:include, InstanceMethods)
@@ -40,8 +39,8 @@ module RedmineRate
       end
     end
   end
-end
 
-unless UsersHelper.included_modules.include?(RedmineRate::Patches::UsersHelperPatch)
-  UsersHelper.send(:include, RedmineRate::Patches::UsersHelperPatch)
+
+unless UsersHelper.included_modules.include?(RedmineRate::UsersHelperPatch)
+  UsersHelper.send(:include, RedmineRate::UsersHelperPatch)
 end

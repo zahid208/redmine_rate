@@ -1,7 +1,6 @@
 require_dependency 'redmine/helpers/time_report'
 
 module RedmineRate
-  module Patches
     module TimeReportPatch
       def self.included(base)
         base.send(:include, InstanceMethods)
@@ -24,8 +23,8 @@ module RedmineRate
       end
     end
   end
-end
 
-unless Redmine::Helpers::TimeReport.included_modules.include?(RedmineRate::Patches::TimeReportPatch)
-  Redmine::Helpers::TimeReport.send(:include, RedmineRate::Patches::TimeReportPatch)
+
+unless Redmine::Helpers::TimeReport.included_modules.include?(RedmineRate::TimeReportPatch)
+  Redmine::Helpers::TimeReport.send(:include, RedmineRate::TimeReportPatch)
 end

@@ -1,5 +1,4 @@
 module RedmineRate
-  module Patches
     module IssueQueryPatch
       def self.included(base)
         base.send(:include, InstanceMethods)
@@ -53,8 +52,8 @@ module RedmineRate
       end
     end
   end
-end
 
-unless IssueQuery.included_modules.include?(RedmineRate::Patches::IssueQueryPatch)
-  IssueQuery.send(:include, RedmineRate::Patches::IssueQueryPatch)
+
+unless IssueQuery.included_modules.include?(RedmineRate::IssueQueryPatch)
+  IssueQuery.send(:include, RedmineRate::IssueQueryPatch)
 end

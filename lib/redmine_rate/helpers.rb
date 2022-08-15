@@ -96,4 +96,4 @@ module RedmineRate
   end
 end
 
-ActionView::Base.send :include, RedmineRate::Helpers
+ActionView::Base.prepend(RedmineRate::Helpers)

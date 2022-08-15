@@ -1,5 +1,4 @@
 module RedmineRate
-  module Patches
     # Overwrite QueriesHelper
     module QueriesHelperPatch
       def self.included(base)
@@ -24,8 +23,6 @@ module RedmineRate
       end
     end
   end
-end
 
-unless QueriesHelper.included_modules.include?(RedmineRate::Patches::QueriesHelperPatch)
-  QueriesHelper.send(:include, RedmineRate::Patches::QueriesHelperPatch)
-end
+
+  QueriesHelper.prepend(RedmineRate::QueriesHelperPatch)

@@ -1,5 +1,4 @@
 module RedmineRate
-  module Patches
     module TimeEntryQueryPatch
       def self.included(base)
         base.send(:include, InstanceMethods)
@@ -44,8 +43,8 @@ module RedmineRate
       end
     end
   end
-end
 
-unless TimeEntryQuery.included_modules.include?(RedmineRate::Patches::TimeEntryQueryPatch)
-  TimeEntryQuery.send(:include, RedmineRate::Patches::TimeEntryQueryPatch)
+
+unless TimeEntryQuery.included_modules.include?(RedmineRate::TimeEntryQueryPatch)
+  TimeEntryQuery.send(:include, RedmineRate::TimeEntryQueryPatch)
 end

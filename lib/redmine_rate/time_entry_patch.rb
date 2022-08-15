@@ -1,7 +1,6 @@
 require_dependency 'time_entry'
 
 module RedmineRate
-  module Patches
     module TimeEntryPatch
       def self.included(base)
         base.extend(ClassMethods)
@@ -91,8 +90,7 @@ module RedmineRate
       end
     end
   end
-end
 
-unless TimeEntry.included_modules.include?(RedmineRate::Patches::TimeEntryPatch)
-  TimeEntry.send(:include, RedmineRate::Patches::TimeEntryPatch)
+unless TimeEntry.included_modules.include?(RedmineRate::TimeEntryPatch)
+  TimeEntry.send(:include, RedmineRate::TimeEntryPatch)
 end
