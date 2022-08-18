@@ -9,6 +9,9 @@ module RedmineRate
       end
     end
 
+
+
+
     def rate_last_cache_clearing_run
       if RedmineRate.settings[:last_cache_clearing_run].present? &&
          RedmineRate.settings[:last_cache_clearing_run].to_date
@@ -93,7 +96,10 @@ module RedmineRate
       locale ||= Setting.default_language
       number_to_currency(num, unit: currency_name(true), locale: locale, precision: 2)
     end
+
+
+
   end
 end
 
-ActionView::Base.prepend(RedmineRate::Helpers)
+ApplicationHelper.prepend(RedmineRate::Helpers)

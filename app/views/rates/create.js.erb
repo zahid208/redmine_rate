@@ -1,4 +1,10 @@
 var elementId = '<%= "#rate_#{@rate.project_id.to_s}_#{@rate.user_id.to_s}" %>';
-$(elementId).html('<strong><%= link_to number_to_currency(@rate.amount), {
-    controller: :users, action: :edit, id: @rate.user, tab: :rates
-} %></strong>');
+<%if User.current.admin? %>
+  $(elementId).html('<strong><%= link_to show_number_with_currency(@rate.amount), {
+     controller: :users, action: :edit, id: @rate.user, tab: :rates
+    } %></strong>');
+<% else %>
+  $(elementId).html('<strong><%= link_to show_number_with_currency(@rate.amount), {
+     controller: :rates, action: :index, user_id: @rate.user, project_id: @rate.project_id
+    } %></strong>');
+<% end %>

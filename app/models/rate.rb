@@ -128,6 +128,18 @@ class Rate < ActiveRecord::Base
     Rails.root + 'tmp' + Rate::CACHING_LOCK_FILE_NAME
   end
 
+  def self.rate_locking_enabled?
+    if RedmineRate.settings[:enable_rate_lock].present?
+      if RedmineRate.settings[:enable_rate_lock] == "1"
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
   private
 
   def update_time_entry_cost_cache

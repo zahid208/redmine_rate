@@ -13,19 +13,20 @@ Redmine::Plugin.register :redmine_rate do
   description 'The Rate plugin provides an API that can be used to find the rate for a Member of a Project at a specific date.
                It also stores historical rate data so calculations will remain correct in the future.
 (Upgraded by Zahid Zaidi )'
-  version '1.1.1'
+  version '1.1.2'
 
   requires_redmine version_or_higher: '3.3.0'
 
   default_settings = {
     last_caching_run: nil,
     billable_default: 1,
-    currency: 'EUR'
+    currency: 'EUR',
+    enable_rate_lock: 1
   }
 
   project_module :time_tracking do
     permission :activate_billable, {}
-    permission :view_rate, {}
+    permission :show_and_edit_rates, {}
   end
 
   settings(default: default_settings, partial: 'settings/rate/rate')

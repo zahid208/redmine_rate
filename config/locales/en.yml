@@ -27,3 +27,5 @@ en:
   text_last_caching_run: "Last caching run at: "
   text_load_missing_caches: "Load missing caches"
   text_no_cache_run: "no cache run found"
+  label_enable_rate_lock: Enable Rate Locking
+  enable_rate_info: If active, Rate Locking Feature will be activated.
