@@ -102,4 +102,4 @@ module RedmineRate
   end
 end
 
-ApplicationHelper.prepend(RedmineRate::Helpers)
+ActionView::Base.prepend(RedmineRate::Helpers)

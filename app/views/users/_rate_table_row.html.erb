@@ -36,7 +36,7 @@
                                                                 id: member.user,
                                                                 tab: 'rates',
                                                                 protocol: Setting.protocol,
-                                                                host: Setting.host_name) %>
+                                                                host: Setting.host_name.include?("localhost") ?  request.host :  Setting.host_name) %>
           <% else %>
       <%= link_to(show_number_with_currency(rate.amount), controller: 'rates',
                   action: 'index',
@@ -44,8 +44,7 @@
                   project_id: project.id,
                   user_id: member.user.id,
                   protocol: Setting.protocol,
-                  host: Setting.host_name) %>
-          <%#= number_to_currency(rate.amount) %>
+                  host: Setting.host_name.include?("localhost") ?  request.host :  Setting.host_name) %>
           <% end %>
    </strong>
   <% end %>
