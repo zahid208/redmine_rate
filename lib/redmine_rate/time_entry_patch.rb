@@ -7,9 +7,9 @@ module RedmineRate
         base.send(:include, InstanceMethods)
         base.class_eval do
           belongs_to :rate
-          after_initialize :initialize_billable if Class.class_name == "TimeEntry"
-          before_save :set_billable if Class.class_name == "TimeEntry"
-          before_save :recalculate_cost if Class.class_name == "TimeEntry"
+          after_initialize :initialize_billable if self.class.name == "TimeEntry"
+          before_save :set_billable if self.class.name == "TimeEntry"
+          before_save :recalculate_cost if self.class.name == "TimeEntry"
           safe_attributes 'billable'
         end
       end
