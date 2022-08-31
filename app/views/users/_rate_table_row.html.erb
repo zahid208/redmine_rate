@@ -24,8 +24,8 @@
                                              action: 'settings',
                                              id: project,
                                              tab: 'members',
-                                             protocol: Setting.protocol,
-                                             host: Setting.host_name)) %>
+                                             protocol: request.protocol,
+                                             host: request.host )) %>
     <%= submit_tag(l(:rate_label_set_rate), class: 'small') %>
     <% end %>
   <% end %>
@@ -35,16 +35,16 @@
                                                                 action: 'edit',
                                                                 id: member.user,
                                                                 tab: 'rates',
-                                                                protocol: Setting.protocol,
-                                                                host: Setting.host_name.include?("localhost") ?  request.host :  Setting.host_name) %>
+                                                                protocol: request.protocol,
+                                                                host: request.host ) %>
           <% else %>
       <%= link_to(show_number_with_currency(rate.amount), controller: 'rates',
                   action: 'index',
                   id: member.user,
                   project_id: project.id,
                   user_id: member.user.id,
-                  protocol: Setting.protocol,
-                  host: Setting.host_name.include?("localhost") ?  request.host :  Setting.host_name) %>
+                  protocol: request.protocol,
+                  host: request.host) %>
           <% end %>
    </strong>
   <% end %>

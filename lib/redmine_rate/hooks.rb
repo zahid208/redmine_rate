@@ -36,7 +36,7 @@ module RedmineRate
 
       # Global helpers
       require_relative 'helpers'
-      require_relative 'redmine_rate'
+      require_relative '../redmine_rate'
 
       # Hooks
     end

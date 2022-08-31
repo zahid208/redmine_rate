@@ -1,14 +1,14 @@
 require 'redmine'
 
 module RedmineRate
-  def self.settings
-    ActionController::Parameters.new(Setting[:plugin_redmine_rate].instance_values["parameters"]) rescue  ActionController::Parameters.new( Setting[:plugin_redmine_rate])
-  end
+    def self.settings
+      ActionController::Parameters.new(Setting[:plugin_redmine_rate].instance_values["parameters"]) rescue ActionController::Parameters.new(Setting[:plugin_redmine_rate])
+    end
 
-  def self.setting?(value)
-    return true if settings[value].to_i == 1
-    false
-  end
+    def self.setting?(value)
+      return true if settings[value].to_i == 1
+      false
+    end
 end
 
 Rails.application.config.to_prepare do
