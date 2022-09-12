@@ -28,11 +28,13 @@ module RedmineRate
       require_relative  'issue_patch'
       require_relative 'issue_query_patch'
       require_relative 'time_entry_patch'
-      require_relative 'setting_patch'
+
       require_relative 'time_entry_query_patch'
       require_relative 'time_report_patch'
       require_relative 'users_helper_patch'
       require_relative 'queries_helper_patch'
+
+      require_relative 'settings_controller_patch'
 
       # Global helpers
       require_relative 'helpers'
