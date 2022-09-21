@@ -185,20 +185,7 @@ class RatesController < ApplicationController
   end
 
   def skip_lock_feature_and_recalculate_cost!(ids, current_rate_id)
-
-    time_entries = TimeEntry.where(rate_id: ids)
-    time_entries.each do |e|
-      e.rate_id = current_rate_id
-      e.save
-    end
-
-    TimeEntry.find_each do |time_entry| # batch find
-      begin
-        time_entry.recalculate_cost!
-      rescue Rate::InvalidParameterException => ex
-        Rails.logger.error "Error saving #{time_entry.id}: #{ex.message}"
-      end
-    end
+    TimeEntry.where(rate_id: ids).update_all(rate_id: current_rate_id)
   end
 
   # Override defination from ApplicationController to make sure it follows a

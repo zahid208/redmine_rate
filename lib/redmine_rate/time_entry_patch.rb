@@ -16,9 +16,10 @@ module RedmineRate
 
       module ClassMethods
         # Updated the cached cost of all TimeEntries for user and project
-        def update_cost_cache(user, project = nil)
+        def update_cost_cache(user, project = nil, date_in_effect = nil )
           c = { user_id: user }
           c[:project_id] = project unless project.nil?
+          c[:spent_on] = date_in_effect unless date_in_effect.nil?
           where(c).each(&:recalculate_cost!)
         end
       end

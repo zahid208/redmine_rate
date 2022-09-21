@@ -143,6 +143,6 @@ class Rate < ActiveRecord::Base
   private
 
   def update_time_entry_cost_cache
-    TimeEntry.update_cost_cache(user, project)
+    TimeEntry.update_cost_cache(user, project, date_in_effect)
   end
 end
